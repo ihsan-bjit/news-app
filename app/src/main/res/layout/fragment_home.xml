@@ -6,21 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.HomeFragment">
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/photos_grid"
+        android:id="@+id/recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="6dp"
-        android:clipToPadding="false"
+
+         />
+    <!--tools:listitem="@layout/news_item"
+    app:listData="@{() -> viewModel.photos}"
+    android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:listData="@{() -> viewModel.photos}"
+
         app:spanCount="2"
         tools:itemCount="16"
-        tools:listitem="@layout/news_item" />
-
+         app:newsApiStatus="@{() -> viewModel.status}" -->
     <ImageView
         android:id="@+id/status_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:marsApiStatus="@{() -> viewModel.status}" />
+       />
 
 </LinearLayout>

@@ -8,12 +8,13 @@
             type="com.ihsan.news_app.model.Article" />
     </data>
     <ImageView
-        android:id="@+id/mars_image"
+        android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="170dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:padding="2dp"
-        app:imageUrl="@{() -> article.urlToImage}"
+
         tools:src="@tools:sample/backgrounds/scenic"/>
+    <!--app:imageUrl="@{article.urlToImage}"-->
 </layout>
