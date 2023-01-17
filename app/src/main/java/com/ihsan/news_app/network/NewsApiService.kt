@@ -16,7 +16,7 @@ private val retrofit=Retrofit.Builder().addConverterFactory(MoshiConverterFactor
     BASE_URL).build()
 
 interface NewsApiService {
-    @GET("everything?q=tesla&from=2022-12-16&sortBy=publishedAt&apiKey=d23ac9e257ea43b0a88772f5fa449792")
+    @GET("everything?q=tesla&from=2022-12-17&sortBy=publishedAt&apiKey=d23ac9e257ea43b0a88772f5fa449792")
     suspend fun getNews():News
 }
 
