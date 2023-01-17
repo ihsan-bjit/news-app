@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="200dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical">
-<!--    <data>-->
-<!--        <variable-->
-<!--            name="article"-->
-<!--            type="com.ihsan.news_app.model.Article" />-->
-<!--    </data>-->
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="170dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center_horizontal"
-        android:adjustViewBounds="true"
-        android:padding="2dp"
-        tools:src="@tools:sample/backgrounds/scenic"/>
-    <!--app:imageUrl="@{article.urlToImage}"-->
-    <TextView
-        android:id="@+id/title"
+    android:layout_height="230dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    android:padding="5dp"
+    android:layout_margin="5dp">
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textStyle="bold"
-        android:layout_height="30dp"/>
-</LinearLayout>
+        android:orientation="vertical">
+        <!--    <data>-->
+        <!--        <variable-->
+        <!--            name="article"-->
+        <!--            type="com.ihsan.news_app.model.Article" />-->
+        <!--    </data>-->
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:scaleType="fitXY"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:padding="2dp"
+            android:elevation="10dp"
+            tools:src="@tools:sample/backgrounds/scenic"/>
+        <!--app:imageUrl="@{article.urlToImage}"-->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

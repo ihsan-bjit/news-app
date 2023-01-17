@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.MainActivity"
     android:orientation="vertical">
 
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/homeview_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/homeview_fragment"
         android:name="com.ihsan.news_app.ui.fragment.HomeFragment"
-        tools:layout="@layout/fragment_home"/>
-    <TextView
-        android:id="@+id/text_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_home" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:menu="@menu/bottom_navigation" />
 
 </LinearLayout>

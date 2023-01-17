@@ -37,6 +37,6 @@ class ArticleAdapter(
         val article=articleList[position]
         Log.d("TAG", "onViewCreated adapter: ${article.title}")
         holder.title.text=article.title
-        Picasso.get().load(article.urlToImage).into(holder.image)
+        Picasso.get().load(article.urlToImage).fit().centerCrop().placeholder(R.drawable.progress_animation).into(holder.image)
     }
 }
