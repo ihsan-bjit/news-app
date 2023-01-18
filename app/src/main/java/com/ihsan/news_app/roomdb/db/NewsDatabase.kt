@@ -4,13 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ihsan.news_app.model.Article
+import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.roomdb.dao.NewsDao
 
-@Database(entities = [Article::class], version=5, exportSchema = false)
+@Database(entities = [NewsTable::class], version=2, exportSchema = false)
 abstract class NewsDatabase:RoomDatabase() {
     abstract fun newsDao():NewsDao
-
     companion object{
         @Volatile
         private var INSTANCE: NewsDatabase?=null
