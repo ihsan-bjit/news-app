@@ -25,7 +25,7 @@ class NewsviewViewModel: ViewModel() {
     }
 
     private fun getNews(){
-        viewModelScope.launch {
+        viewModelScope.launch{
             _status.value=NewsApiStatus.LOADING
             try {
                 _news.value=NewsApi.retrofitService.getNews()

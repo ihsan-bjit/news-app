@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,9 +45,10 @@ class HomeFragment : Fragment() {
                 recyclerView.layoutManager=LinearLayoutManager(requireContext())
                 recyclerView.adapter=ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<Article>)
             }
+            else{
+                Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT).show()
+            }
 //            Log.d("TAG", "onViewCreated home: $it")
         }
-
     }
-
 }
