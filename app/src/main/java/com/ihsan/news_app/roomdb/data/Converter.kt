@@ -30,7 +30,8 @@ class Converter {
             news.title,
             news.url,
             news.urlToImage,
-            ""
+            "",
+            false
         )
     }
 }

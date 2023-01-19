@@ -4,23 +4,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.fragment.BookmarksFragment">
+        tools:context=".ui.fragment.GeneralFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_bookmarks"
+            android:id="@+id/recyclerview_general"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="6dp"
 
             />
-        <!--tools:listitem="@layout/news_item"
-        app:listData="@{() -> viewModel.photos}"
-        android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 
-            app:spanCount="2"
-            tools:itemCount="16"
-             app:newsApiStatus="@{() -> viewModel.status}" -->
         <ImageView
             android:id="@+id/status_image"
             android:layout_width="wrap_content"

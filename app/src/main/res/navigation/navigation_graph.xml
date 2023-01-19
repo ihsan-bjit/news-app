@@ -6,7 +6,7 @@
     app:startDestination="@id/tabLayoutFragment">
     <fragment
         android:id="@+id/tabLayoutFragment"
-        android:name="com.ihsan.news_app.ui.fragment.TabLayoutFragment"
+        android:name="com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragment"
         android:label="fragment_tab_layout"
         tools:layout="@layout/fragment_tab_layout" />
 </navigation>

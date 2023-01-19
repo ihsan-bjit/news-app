@@ -15,4 +15,7 @@ interface NewsDao {
 
     @Query("SELECT * FROM news")
     fun readAllNews(): LiveData<List<NewsTable>>
+
+    @Query("SELECT * FROM news WHERE category='sports'")
+    fun readSportsNews(): LiveData<List<NewsTable>>
 }

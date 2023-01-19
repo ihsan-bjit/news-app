@@ -22,6 +22,7 @@ class NewsviewViewModel: ViewModel() {
 
     init {
         getNews()
+
     }
 
     private fun getNews(){

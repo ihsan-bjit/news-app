@@ -1,4 +1,4 @@
-package com.ihsan.news_app.ui.fragment
+package com.ihsan.news_app.ui.fragment.viewpager
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

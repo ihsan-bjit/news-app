@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.databinding.FragmentBookmarksBinding
+import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
 
 class BookmarksFragment : Fragment() {
-    private val viewModel: NewsviewViewModel by viewModels()
+    private lateinit var viewModel: NewsviewViewModel
+    private lateinit var recyclerView: RecyclerView
+    lateinit var newsList: List<Article>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

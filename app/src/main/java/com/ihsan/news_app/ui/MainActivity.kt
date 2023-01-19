@@ -5,16 +5,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 
 import com.ihsan.news_app.R
 import com.ihsan.news_app.databinding.ActivityMainBinding
 import com.ihsan.news_app.ui.fragment.BookmarksFragment
-import com.ihsan.news_app.ui.fragment.HomeFragment
-import com.ihsan.news_app.ui.fragment.TabLayoutFragment
+import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
