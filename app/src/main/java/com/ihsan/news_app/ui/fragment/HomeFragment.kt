@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +20,7 @@ import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
 
 class HomeFragment : Fragment() {
-    private lateinit var viewModel: NewsviewViewModel
+    val viewModel: NewsviewViewModel by viewModels()
     private lateinit var recyclerView:RecyclerView
     lateinit var newsList: List<Article>
 
@@ -29,15 +30,13 @@ class HomeFragment : Fragment() {
     ): View? {
         val binding=FragmentHomeBinding.inflate(inflater)
         // Inflate the layout for this fragment
+//        viewModel = ViewModelProvider(requireActivity())[NewsviewViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel=ViewModelProvider(this)[NewsviewViewModel::class.java]
-
-        viewModel.articles.observe(viewLifecycleOwner){
+        viewModel.articles.observe(requireActivity()){
             if (it != null) {
                 newsList=it
 //                Log.d("TAG", "onViewCreated home newsList: $newsList")

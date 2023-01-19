@@ -28,7 +28,7 @@ abstract class NewsDatabase:RoomDatabase() {
                     "news_database"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE=instance
-                return  instance
+                return instance
             }
         }
     }
