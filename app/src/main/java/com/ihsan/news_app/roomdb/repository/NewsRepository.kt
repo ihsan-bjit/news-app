@@ -11,4 +11,7 @@ class NewsRepository(private val newsDao:NewsDao) {
     suspend fun addNews(news:NewsTable){
         newsDao.addNews(news)
     }
+    suspend fun addNewses(news:List<NewsTable>){
+        newsDao.addNewses(news)
+    }
 }

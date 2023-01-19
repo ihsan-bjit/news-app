@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.roomdb.dao.NewsDao
 
-@Database(entities = [NewsTable::class], version=2, exportSchema = false)
+@Database(entities = [NewsTable::class], version=6, exportSchema = false)
 abstract class NewsDatabase:RoomDatabase() {
     abstract fun newsDao():NewsDao
     companion object{
