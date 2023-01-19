@@ -14,7 +14,6 @@ import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
-
 class TechnologyFragment : Fragment() {
     private lateinit var viewModel: NewsviewViewModel
     private lateinit var recyclerView: RecyclerView
