@@ -14,4 +14,37 @@ class NewsRepository(private val newsDao:NewsDao) {
     suspend fun addNewses(news:List<NewsTable>){
         newsDao.addNewses(news)
     }
+    suspend fun updateNews(news:NewsTable){
+        newsDao.updateNews(news)
+    }
+    suspend fun deleteNews(news:NewsTable){
+        newsDao.deleteNews(news)
+    }
+    suspend fun deleteAllNews(news:NewsTable){
+        newsDao.deleteAll()
+    }
+    suspend fun readBookmarksNews(){
+        newsDao.readBookmarksNews()
+    }
+    suspend fun readBusinessNews(){
+        newsDao.readBusinessNews()
+    }
+    suspend fun readEntertainmentNews(){
+        newsDao.readEntertainmentNews()
+    }
+    suspend fun readGeneralNews(){
+        newsDao.readGeneralNews()
+    }
+    suspend fun readHealthNews(){
+        newsDao.readHealthNews()
+    }
+    suspend fun readScienceNews(){
+        newsDao.readScienceNews()
+    }
+    suspend fun readSportsNews(){
+        newsDao.readSportsNews()
+    }
+    suspend fun readTechnologyNews(){
+        newsDao.readTechnologyNews()
+    }
 }

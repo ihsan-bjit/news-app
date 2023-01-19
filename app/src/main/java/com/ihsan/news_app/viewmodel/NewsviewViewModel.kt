@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.News
+import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.network.NewsApi
 import com.ihsan.news_app.roomdb.data.DataConverter
 import com.ihsan.news_app.roomdb.db.NewsDatabase
@@ -18,7 +19,7 @@ import kotlinx.coroutines.*
 enum class NewsApiStatus { LOADING, ERROR, DONE }
 
 class NewsviewViewModel(application: Application): AndroidViewModel(application) {
-    lateinit var repository:NewsRepository
+    var repository:NewsRepository
     private val _news = MutableLiveData<News>()
     val news: LiveData<News> = _news
     private val _articles = MutableLiveData<List<Article>?>()
@@ -26,11 +27,15 @@ class NewsviewViewModel(application: Application): AndroidViewModel(application)
     private val _status = MutableLiveData<NewsApiStatus>()
     val status: LiveData<NewsApiStatus> = _status
 
+//    val readAllNews: LiveData<List<Article>>
+
+
     init {
         val newsDao= NewsDatabase.getDatabase(application).newsDao()
         repository= NewsRepository(newsDao)
-        getNews()
 
+//        readAllNews.value=DataConverter().getArticle(repository.readAllNews.value)
+        getNews()
     }
     private fun getNews(){
         viewModelScope.launch{
@@ -38,12 +43,14 @@ class NewsviewViewModel(application: Application): AndroidViewModel(application)
             try {
                 _news.value=NewsApi.retrofitService.getNews()
                 _articles.value= _news.value!!.articles
+
                 Log.d("TAG", "getNews: ${_news.value!!.articles?.size}")
                 _status.value=NewsApiStatus.DONE
+
                 val responseToRoomFormat= DataConverter().getNewsTable(_articles.value,"all")
-//                repository.addNewses(responseToRoomFormat)
-                repository.addNews(responseToRoomFormat[0])
-            }catch (e: java.lang.Exception){
+                repository.addNewses(responseToRoomFormat)
+            }
+            catch (e: java.lang.Exception){
                 _status.value=NewsApiStatus.ERROR
                 _news.value=News(null,"error",0)
             }

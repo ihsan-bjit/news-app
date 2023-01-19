@@ -5,8 +5,8 @@ import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.model.Source
 
 class DataConverter {
-    fun getArticle(newses: List<NewsTable>): List<Article> {
-        return newses.map{news->
+    fun getArticle(newses: List<NewsTable>?): List<Article> {
+        return newses!!.map{news->
             Article(
                 news.author,
                 news.content,
