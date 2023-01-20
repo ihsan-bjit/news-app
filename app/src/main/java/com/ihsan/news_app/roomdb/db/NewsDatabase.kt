@@ -1,6 +1,7 @@
 package com.ihsan.news_app.roomdb.db
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -28,6 +29,8 @@ abstract class NewsDatabase:RoomDatabase() {
                     "news_database"
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE=instance
+                Log.d("TAG", "getDatabase Instance created: $INSTANCE")
+
                 return instance
             }
         }

@@ -7,6 +7,7 @@ import com.ihsan.news_app.roomdb.dao.NewsDao
 
 class NewsRepository(private val newsDao:NewsDao) {
     val readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
+    val calldao=newsDao.call()
 
     suspend fun addNews(news:NewsTable){
         newsDao.addNews(news)

@@ -1,5 +1,6 @@
 package com.ihsan.news_app.roomdb.dao
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -9,6 +10,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.roomdb.db.NewsDatabase
 
 @Dao
 interface NewsDao {
@@ -29,6 +31,11 @@ interface NewsDao {
 
     @Query("SELECT * FROM news")
     fun readAllNews(): LiveData<List<NewsTable>>
+
+    fun call(){
+        Log.d("TAG", "dao call: ")
+    }
+
 
     @Query("SELECT * FROM news WHERE isBookmarked='true'")
     fun readBookmarksNews(): LiveData<List<NewsTable>>
