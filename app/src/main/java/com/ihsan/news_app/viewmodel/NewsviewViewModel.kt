@@ -2,6 +2,7 @@ package com.ihsan.news_app.viewmodel
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,15 +27,23 @@ class NewsviewViewModel(application: Application): AndroidViewModel(application)
     val articles: LiveData<List<Article>?> = _articles
     private val _status = MutableLiveData<NewsApiStatus>()
     val status: LiveData<NewsApiStatus> = _status
-
-//    val readAllNews: LiveData<List<Article>>
-
+    // getting news from room db
+    private val _readAllNews = MutableLiveData<List<Article>>()
+    val readAllNews: LiveData<List<Article>?> = _readAllNews
 
     init {
         val newsDao= NewsDatabase.getDatabase(application).newsDao()
         repository= NewsRepository(newsDao)
+        val roomNews=repository.readAllNews.value
+        // converting room data to Article
+        if(roomNews!=null){
+            val roomNewsToArticle:List<Article> = DataConverter().getArticle(roomNews)
+            _readAllNews.value=roomNewsToArticle
+        }
+        else{
+//            Toast.makeText(context, "xfs", Toast.LENGTH_SHORT).show()
+        }
 
-//        readAllNews.value=DataConverter().getArticle(repository.readAllNews.value)
         getNews()
     }
     private fun getNews(){
