@@ -9,6 +9,9 @@ class NewsRepository(private val newsDao:NewsDao) {
     val readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
     val calldao=newsDao.call()
 
+    fun getNews():LiveData<List<NewsTable>>{
+        return newsDao.readAllNews()
+    }
     suspend fun addNews(news:NewsTable){
         newsDao.addNews(news)
     }
