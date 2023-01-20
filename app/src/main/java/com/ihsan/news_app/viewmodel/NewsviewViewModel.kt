@@ -8,8 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.News
+import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.model.Source
 import com.ihsan.news_app.network.NewsApi
+import com.ihsan.news_app.roomdb.dao.NewsDao
 import com.ihsan.news_app.roomdb.data.DataConverter
 import com.ihsan.news_app.roomdb.db.NewsDatabase
 import com.ihsan.news_app.roomdb.repository.NewsRepository
@@ -28,18 +30,18 @@ class NewsviewViewModel(application: Application): AndroidViewModel(application)
     // setting status
     private val _status = MutableLiveData<NewsApiStatus>()
     val status: LiveData<NewsApiStatus> = _status
-
+    private lateinit var newsDao:NewsDao
     // getting news from room db
     //private val _readAllNews = MutableLiveData<List<Article>>()
     //val readAllNews: LiveData<List<Article>> /*= _readAllNews*/
 
     init {
         //Getting dao instance
-        val newsDao = NewsDatabase.getDatabase(application).newsDao()
+         newsDao = NewsDatabase.getDatabase(application).newsDao()
 
         //Assigning dao object to repository instance
         repository = NewsRepository(newsDao)
-        Log.d("TAG", "is called: ${repository.calldao}")
+        Log.d("TAG", "is called: ${repository.readAllNews.value}")
         Log.d("TAG", "repo getnws :${repository.getNews().value} ")
         val roomNews = repository.readAllNews.value
         Log.d("TAG", "roomNews: ${repository.readAllNews.value}")
@@ -56,6 +58,9 @@ class NewsviewViewModel(application: Application): AndroidViewModel(application)
 //            Toast.makeText(context, "xfs", Toast.LENGTH_SHORT).show()
         }
         getApiNews()
+    }
+    fun getAllNews():LiveData<List<NewsTable>>{
+        return repository.getNews()
     }
 
     private fun getApiNews(){

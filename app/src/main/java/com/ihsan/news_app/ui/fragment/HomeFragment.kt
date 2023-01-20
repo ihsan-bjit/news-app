@@ -36,6 +36,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getAllNews().observe(viewLifecycleOwner){
+            Log.d("TAG", "onViewCreated: $it")
+        }
         viewModel.articles.observe(requireActivity()){
 //            Log.d("TAG", "onViewCreated: $it")
             if (it != null) {
