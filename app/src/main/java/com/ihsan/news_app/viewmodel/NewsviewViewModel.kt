@@ -56,15 +56,15 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
+                _articles.value = NewsApi.retrofitService.getNewsFromApi().articles
                 _status.value = NewsApiStatus.DONE
 
                 val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "all")
                 repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+
+                Log.d("viewmodel", "api news size News Size: ${_news.value!!.articles?.size}")
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
@@ -75,8 +75,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getTopHeadlinesApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
@@ -95,8 +94,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getBusinessNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
@@ -114,14 +112,12 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getEntertainmentNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
 
-                val responseToRoomFormat =
-                    DataConverter().getNewsTable(_articles.value, "entertainment")
+                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "entertainment")
                 repository.addNewses(responseToRoomFormat)
             } catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
@@ -134,8 +130,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getGeneralNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
@@ -153,8 +148,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getHealthNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
@@ -172,8 +166,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getScienceNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
@@ -191,8 +184,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getSportsNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
@@ -210,8 +202,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _news.value = NewsApi.retrofitService.getNewsFromApi()
-                _articles.value = _news.value!!.articles
+                _articles.value = NewsApi.retrofitService.getTechnologyNewsApi().articles
 
                 Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
                 _status.value = NewsApiStatus.DONE
