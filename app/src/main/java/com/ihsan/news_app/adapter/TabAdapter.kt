@@ -12,6 +12,7 @@ class TabAdapter(manager: FragmentManager, lifecycle:Lifecycle): FragmentStateAd
     companion object{
         val listTab = listOf(
             Tab(HomeFragment(), "Home"),
+            Tab(TopHeadlinesFragment(), "Top Headlines"),
             Tab(BusinessFragment(), "Business"),
             Tab(EntertainmentFragment(), "Entertainment"),
             Tab(GeneralFragment(), "General"),

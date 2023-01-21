@@ -32,14 +32,11 @@ interface NewsDao {
     @Query("SELECT * FROM news")
     fun readAllNews(): LiveData<List<NewsTable>>
 
-    fun call(){
-        Log.d("TAG", "dao call: ")
-    }
-
-
     @Query("SELECT * FROM news WHERE isBookmarked='true'")
     fun readBookmarksNews(): LiveData<List<NewsTable>>
 
+    @Query("SELECT * FROM news WHERE category='business'")
+    fun readTopHeadlines(): LiveData<List<NewsTable>>
     @Query("SELECT * FROM news WHERE category='business'")
     fun readBusinessNews(): LiveData<List<NewsTable>>
     @Query("SELECT * FROM news WHERE category='entertainment'")

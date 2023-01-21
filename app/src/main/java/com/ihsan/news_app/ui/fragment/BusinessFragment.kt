@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
-import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
@@ -32,7 +31,7 @@ class BusinessFragment : Fragment() {
 
         viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
 
-        viewModel.getAllNews().observe(viewLifecycleOwner){
+        viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner){
             if (it != null) {
                 newsList=it
 //                Log.d("TAG", "onViewCreated home newsList: $newsList")

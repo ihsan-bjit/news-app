@@ -1,54 +1,69 @@
 package com.ihsan.news_app.roomdb.repository
 
 import androidx.lifecycle.LiveData
-import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.roomdb.dao.NewsDao
 
-class NewsRepository(private val newsDao:NewsDao) {
-    val readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
-    val calldao=newsDao.call()
+class NewsRepository(private val newsDao: NewsDao) {
+    var readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
 
-    fun getNews():LiveData<List<NewsTable>>{
+    fun getAllNews(): LiveData<List<NewsTable>> {
         return newsDao.readAllNews()
     }
-    suspend fun addNews(news:NewsTable){
+
+    suspend fun addNews(news: NewsTable) {
         newsDao.addNews(news)
     }
-    suspend fun addNewses(news:List<NewsTable>){
+
+    suspend fun addNewses(news: List<NewsTable>) {
         newsDao.addNewses(news)
     }
-    suspend fun updateNews(news:NewsTable){
+
+    suspend fun updateNews(news: NewsTable) {
         newsDao.updateNews(news)
     }
-    suspend fun deleteNews(news:NewsTable){
+
+    suspend fun deleteNews(news: NewsTable) {
         newsDao.deleteNews(news)
     }
-    suspend fun deleteAllNews(news:NewsTable){
+
+    suspend fun deleteAllNews(news: NewsTable) {
         newsDao.deleteAll()
     }
-    suspend fun readBookmarksNews(){
-        newsDao.readBookmarksNews()
+
+    fun readBookmarksNews(): LiveData<List<NewsTable>> {
+        return newsDao.readBookmarksNews()
     }
-    suspend fun readBusinessNews(){
-        newsDao.readBusinessNews()
+
+    fun readTopHeadlines(): LiveData<List<NewsTable>> {
+        return newsDao.readTopHeadlines()
     }
-    suspend fun readEntertainmentNews(){
-        newsDao.readEntertainmentNews()
+
+    fun readBusinessNews(): LiveData<List<NewsTable>> {
+        return newsDao.readBusinessNews()
     }
-    suspend fun readGeneralNews(){
-        newsDao.readGeneralNews()
+
+    fun readEntertainmentNews(): LiveData<List<NewsTable>> {
+        return newsDao.readEntertainmentNews()
     }
-    suspend fun readHealthNews(){
-        newsDao.readHealthNews()
+
+    fun readGeneralNews(): LiveData<List<NewsTable>> {
+        return newsDao.readGeneralNews()
     }
-    suspend fun readScienceNews(){
-        newsDao.readScienceNews()
+
+    fun readHealthNews(): LiveData<List<NewsTable>> {
+        return newsDao.readHealthNews()
     }
-    suspend fun readSportsNews(){
-        newsDao.readSportsNews()
+
+    fun readScienceNews(): LiveData<List<NewsTable>> {
+        return newsDao.readScienceNews()
     }
-    suspend fun readTechnologyNews(){
-        newsDao.readTechnologyNews()
+
+    fun readSportsNews(): LiveData<List<NewsTable>> {
+        return newsDao.readSportsNews()
+    }
+
+    fun readTechnologyNews(): LiveData<List<NewsTable>> {
+        return newsDao.readTechnologyNews()
     }
 }

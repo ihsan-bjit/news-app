@@ -14,28 +14,35 @@ import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
-class SportsFragment : Fragment() {
+class TopHeadlinesFragment : Fragment() {
     private lateinit var viewModel: NewsviewViewModel
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sports, container, false)
+        return inflater.inflate(R.layout.fragment_top_headlines, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
 
-        viewModel.getSportsNewsLocal().observe(viewLifecycleOwner){
+        viewModel.getTopHeadlineNewsLocal().observe(viewLifecycleOwner){
             if (it != null) {
                 newsList=it
 //                Log.d("TAG", "onViewCreated home newsList: $newsList")
-                recyclerView=view.findViewById(R.id.recyclerview_sports)
+                recyclerView=view.findViewById(R.id.recyclerview_topHeadlines)
                 recyclerView.layoutManager= LinearLayoutManager(requireContext())
                 recyclerView.adapter= ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }
