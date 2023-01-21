@@ -10,13 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.Article
+import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
 
 class ArticleAdapter(
     private val context: Context,
     private val viewModel: NewsviewViewModel,
-    private val articleList: ArrayList<Article>
+    private val articleList: ArrayList<NewsTable>
 ) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
     class ArticleViewHolder(private val binding: View) : RecyclerView.ViewHolder(binding){

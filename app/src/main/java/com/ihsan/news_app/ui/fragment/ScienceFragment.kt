@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.model.Article
+import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
 class ScienceFragment : Fragment() {
     private lateinit var viewModel: NewsviewViewModel
     private lateinit var recyclerView: RecyclerView
-    lateinit var newsList: List<Article>
+    lateinit var newsList: List<NewsTable>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,13 +32,13 @@ class ScienceFragment : Fragment() {
 
         viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
 
-        viewModel.articles.observe(viewLifecycleOwner){
+        viewModel.getAllNews().observe(viewLifecycleOwner){
             if (it != null) {
                 newsList=it
 //                Log.d("TAG", "onViewCreated home newsList: $newsList")
                 recyclerView=view.findViewById(R.id.recyclerview_science)
                 recyclerView.layoutManager= LinearLayoutManager(requireContext())
-                recyclerView.adapter= ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<Article>)
+                recyclerView.adapter= ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }
             else{
                 Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT).show()
