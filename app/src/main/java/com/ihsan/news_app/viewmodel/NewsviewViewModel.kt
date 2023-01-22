@@ -12,7 +12,7 @@ import com.ihsan.news_app.roomdb.dao.NewsDao
 import com.ihsan.news_app.roomdb.data.DataConverter
 import com.ihsan.news_app.roomdb.db.NewsDatabase
 import com.ihsan.news_app.roomdb.repository.NewsRepository
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 enum class NewsApiStatus { LOADING, ERROR, DONE }
 
@@ -23,14 +23,13 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     val news: LiveData<News> = _news
     private val _articles = MutableLiveData<List<Article>?>()
     val articles: LiveData<List<Article>?> = _articles
+    private val _business = MutableLiveData<List<Article>?>()
+    val business: LiveData<List<Article>?> = _business
 
     // setting status
     private val _status = MutableLiveData<NewsApiStatus>()
     val status: LiveData<NewsApiStatus> = _status
     private lateinit var newsDao: NewsDao
-
-    // getting news from room db
-    private val readAllNews = MutableLiveData<List<Article>>()
 
     init {
         //Getting dao instance
@@ -38,51 +37,77 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
 
         //Assigning dao object to repository instance
         repository = NewsRepository(newsDao)
-        getApiNews()
+        //getApiNews()
+       // getTopHeadLinesApi()
+      getAllNewsApi()
     }
 
-     fun getBookmarks(): LiveData<List<NewsTable>> { return repository.readBookmarksNews() }
-     fun getAllNewsLocal(): LiveData<List<NewsTable>> { return repository.getAllNews() }
-     fun getTopHeadlineNewsLocal(): LiveData<List<NewsTable>> { return repository.readTopHeadlines() }
-     fun getBusinessNewsLocal(): LiveData<List<NewsTable>> { return repository.readBusinessNews() }
-     fun getEntertainmentNewsLocal(): LiveData<List<NewsTable>> { return repository.readEntertainmentNews() }
-     fun getGeneralNewsLocal(): LiveData<List<NewsTable>> { return repository.readGeneralNews() }
-     fun getHealthNewsLocal(): LiveData<List<NewsTable>> { return repository.readHealthNews() }
-     fun getScienceNewsLocal(): LiveData<List<NewsTable>> { return repository.readScienceNews() }
-     fun getSportsNewsLocal(): LiveData<List<NewsTable>> { return repository.readSportsNews() }
-     fun getTechnologyNewsLocal(): LiveData<List<NewsTable>> { return repository.readTechnologyNews() }
 
-    private fun getApiNews() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                _articles.value = NewsApi.retrofitService.getNewsFromApi().articles
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "all")
-                repository.addNewses(responseToRoomFormat)
-
-                Log.d("viewmodel", "api news size News Size: ${_news.value!!.articles?.size}")
+    private fun getAllNewsApi():Boolean {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                getTopHeadLinesApi()
+                getBusinessNewsApi()
+                getEntertainmentNewsApi()
+                getGeneralNewsApi()
+                getHealthNewsApi()
+                getScienceNewsApi()
+                getSportsNewsApi()
+                getTechnologyNewsApi()
             }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
-            }
+        } catch (e: Exception) {
+            return false
         }
+        return true
     }
+
+    private fun getOnlyNewNews(localNewsList:List<NewsTable>?, apiArticleList:List<Article>?, category: String):List<NewsTable>?{
+        if (apiArticleList==null)
+        {
+            Log.d("news", "$category NewsApi Size null return: ${apiArticleList?.size}")
+            return listOf()
+        }
+
+        val newNewsList:List<NewsTable>
+        Log.d("news", "$category NewsApi Size: ${apiArticleList?.size}")
+        Log.d("news", "$category NewsLocal Size: ${localNewsList?.size}")
+
+        if (localNewsList!=null){
+            val localArticle:List<Article> = DataConverter().getArticle(localNewsList)
+            var newArticleList= mutableListOf<Article>()
+            apiArticleList.map {
+                if (!localArticle.contains(it)) {
+                    newArticleList.add(it)
+                }
+            }
+            newNewsList=DataConverter().getNewsTable(newArticleList as List<Article>,category)
+        }
+        else {
+            newNewsList=DataConverter().getNewsTable(apiArticleList,category)
+        }
+        _status.value = NewsApiStatus.DONE
+        Log.d("news", "$category New News Size: ${newNewsList?.size}")
+
+        return newNewsList
+    }
+
+    fun getBookmarks(): LiveData<List<NewsTable>> { return repository.readBookmarksNews() }
+    fun getAllNewsLocal(): LiveData<List<NewsTable>> { return repository.getAllNews() }
+    fun getTopHeadlineNewsLocal(): LiveData<List<NewsTable>> { return repository.readTopHeadlines() }
+    fun getBusinessNewsLocal(): LiveData<List<NewsTable>> { return repository.readBusinessNews() }
+    fun getEntertainmentNewsLocal(): LiveData<List<NewsTable>> { return repository.readEntertainmentNews() }
+    fun getGeneralNewsLocal(): LiveData<List<NewsTable>> { return repository.readGeneralNews() }
+    fun getHealthNewsLocal(): LiveData<List<NewsTable>> { return repository.readHealthNews() }
+    fun getScienceNewsLocal(): LiveData<List<NewsTable>> { return repository.readScienceNews() }
+    fun getSportsNewsLocal(): LiveData<List<NewsTable>> { return repository.readSportsNews() }
+    fun getTechnologyNewsLocal(): LiveData<List<NewsTable>> { return repository.readTechnologyNews() }
 
     private fun getTopHeadLinesApi() {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getTopHeadlinesApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat =
-                    DataConverter().getNewsTable(_articles.value, "topHeadlines")
-                repository.addNewses(responseToRoomFormat)
+                val newNews=getOnlyNewNews(repository.readTopHeadlines().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"topHeadlines")
+                repository.addNewses(newNews!!)
             } catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
@@ -94,14 +119,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getBusinessNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "business")
-                repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+                val newNews=getOnlyNewNews(repository.readBusinessNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"business")
+                repository.addNewses(newNews!!)
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
@@ -112,14 +133,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getEntertainmentNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "entertainment")
-                repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+                val newNews=getOnlyNewNews(repository.readEntertainmentNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"entertainment")
+                repository.addNewses(newNews!!)
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
@@ -130,13 +147,8 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getGeneralNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "general")
-                repository.addNewses(responseToRoomFormat)
+                val newNews=getOnlyNewNews(repository.readGeneralNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"general")
+                repository.addNewses(newNews!!)
             } catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
@@ -148,14 +160,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getHealthNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "health")
-                repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+                val newNews=getOnlyNewNews(repository.readHealthNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"health")
+                repository.addNewses(newNews!!)
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
@@ -166,14 +174,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getScienceNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "science")
-                repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+                val newNews=getOnlyNewNews(repository.readScienceNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"science")
+                repository.addNewses(newNews!!)
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
@@ -184,14 +188,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getSportsNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat = DataConverter().getNewsTable(_articles.value, "sports")
-                repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+                val newNews=getOnlyNewNews(repository.readSportsNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"sports")
+                repository.addNewses(newNews!!)
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
@@ -202,15 +202,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                _articles.value = NewsApi.retrofitService.getTechnologyNewsApi().articles
-
-                Log.d("All", "All News Size: ${_news.value!!.articles?.size}")
-                _status.value = NewsApiStatus.DONE
-
-                val responseToRoomFormat =
-                    DataConverter().getNewsTable(_articles.value, "technology")
-                repository.addNewses(responseToRoomFormat)
-            } catch (e: java.lang.Exception) {
+                val newNews=getOnlyNewNews(repository.readTechnologyNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"technology")
+                repository.addNewses(newNews!!)
+            }
+            catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
                 _news.value = News(null, "error", 0)
             }
