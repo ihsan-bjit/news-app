@@ -115,6 +115,12 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         return newNewsList
     }
 
+    fun updateNews(news:NewsTable){
+        viewModelScope.launch {
+            repository.updateNews(news)
+        }
+    }
+
     fun getBookmarks(): LiveData<List<NewsTable>> { return repository.readBookmarksNews() }
     fun getAllNewsLocal(): LiveData<List<NewsTable>> { return repository.getAllNews() }
     fun getTopHeadlineNewsLocal(): LiveData<List<NewsTable>> { return repository.readTopHeadlines() }

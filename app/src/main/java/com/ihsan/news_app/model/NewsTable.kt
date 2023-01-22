@@ -17,5 +17,5 @@ data class NewsTable(
     val url: String?,
     val urlToImage: String?,
     val category: String?,
-    val isBookmarked:Boolean
+    var isBookmarked:Boolean
 )

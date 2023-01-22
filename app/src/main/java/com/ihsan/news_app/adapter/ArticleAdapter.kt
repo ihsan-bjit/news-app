@@ -44,6 +44,22 @@ class ArticleAdapter(
         holder.title.text=article.title
         holder.descripton.text=article.description
         holder.source.text=article.sourceName
+        if(article.isBookmarked){
+            holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
+        }
+
+        holder.btnBookmark.setOnClickListener{
+//            if(article.isBookmarked){
+                holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
+                article.isBookmarked=true
+                viewModel.updateNews(article)
+//            }
+//            else{
+//                holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_remove)
+//                article.isBookmarked=false
+//                viewModel.updateNews(article)
+//            }
+        }
         Picasso.get().load(article.urlToImage).fit().centerCrop().placeholder(R.drawable.progress_animation).into(holder.image)
     }
 }
