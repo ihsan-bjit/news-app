@@ -9,12 +9,14 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 
 class GeneralFragment : Fragment() {
+    private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var viewModel: NewsviewViewModel
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>

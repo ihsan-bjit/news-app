@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,9 @@ class ArticleAdapter(
     class ArticleViewHolder(private val binding: View) : RecyclerView.ViewHolder(binding){
         val title=itemView.findViewById<TextView>(R.id.title)
         val image=itemView.findViewById<ImageView>(R.id.image)
+        val descripton=itemView.findViewById<TextView>(R.id.description)
+        val source=itemView.findViewById<TextView>(R.id.source)
+        val btnBookmark=itemView.findViewById<ImageButton>(R.id.bookmarks)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
@@ -38,6 +42,8 @@ class ArticleAdapter(
         val article=articleList[position]
         Log.d("TAG", "onViewCreated adapter: ${article.title}")
         holder.title.text=article.title
+        holder.descripton.text=article.description
+        holder.source.text=article.sourceName
         Picasso.get().load(article.urlToImage).fit().centerCrop().placeholder(R.drawable.progress_animation).into(holder.image)
     }
 }
