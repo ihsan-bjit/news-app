@@ -5,7 +5,7 @@ import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.roomdb.dao.NewsDao
 
 class NewsRepository(private val newsDao: NewsDao) {
-    var readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
+    val readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
 
     fun getAllNews(): LiveData<List<NewsTable>> {
         return newsDao.readAllNews()

@@ -3,8 +3,10 @@ package com.ihsan.news_app.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.ihsan.news_app.model.*
 import com.ihsan.news_app.network.NewsApi
@@ -18,18 +20,35 @@ enum class NewsApiStatus { LOADING, ERROR, DONE }
 
 class NewsviewViewModel(application: Application) : AndroidViewModel(application) {
     //Initialize repository object
-    val repository: NewsRepository
-    private val _news = MutableLiveData<News>()
-    val news: LiveData<News> = _news
-    private val _articles = MutableLiveData<List<Article>?>()
-    val articles: LiveData<List<Article>?> = _articles
-    private val _business = MutableLiveData<List<Article>?>()
-    val business: LiveData<List<Article>?> = _business
-
+    private val repository: NewsRepository
     // setting status
     private val _status = MutableLiveData<NewsApiStatus>()
     val status: LiveData<NewsApiStatus> = _status
-    private lateinit var newsDao: NewsDao
+    private var newsDao: NewsDao
+
+    private val _articles = MutableLiveData<List<Article>>()
+    val articles: LiveData<List<Article>?> = _articles
+
+    private val _home = MutableLiveData<List<Article>>()
+    val home: LiveData<List<Article>> = _home
+    private val _topHeadlines = MutableLiveData<List<Article>>()
+    val topHeadlines: LiveData<List<Article>> = _topHeadlines
+    private val _business = MutableLiveData<List<Article>>()
+    val business: LiveData<List<Article>> = _business
+    private val _entertainment = MutableLiveData<List<Article>>()
+    val entertainment: LiveData<List<Article>> = _entertainment
+    private val _general = MutableLiveData<List<Article>>()
+    val general: LiveData<List<Article>> = _general
+    private val _health = MutableLiveData<List<Article>>()
+    val health: LiveData<List<Article>> = _health
+    private val _science = MutableLiveData<List<Article>>()
+    val science: LiveData<List<Article>> = _science
+    private val _sports = MutableLiveData<List<Article>>()
+    val sports: LiveData<List<Article>> = _sports
+    private val _technology = MutableLiveData<List<Article>>()
+    val technology: LiveData<List<Article>> = _technology
+
+
 
     init {
         //Getting dao instance
@@ -37,23 +56,28 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
 
         //Assigning dao object to repository instance
         repository = NewsRepository(newsDao)
-        //getApiNews()
-       // getTopHeadLinesApi()
-      getAllNewsApi()
+
+//        getAllNewsLocalDB()
+        //getAllNewsApi()
     }
 
+    private fun getAllNewsLocalDB():Boolean
+    {
+        Log.d("news2", "getAllNewsLocalDB: ${repository.readAllNews.value?.size}")
+        return true
+    }
 
-    private fun getAllNewsApi():Boolean {
+    fun getAllNewsApi(localNews:List<NewsTable>):Boolean {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                getTopHeadLinesApi()
-                getBusinessNewsApi()
-                getEntertainmentNewsApi()
-                getGeneralNewsApi()
-                getHealthNewsApi()
-                getScienceNewsApi()
-                getSportsNewsApi()
-                getTechnologyNewsApi()
+                getTopHeadLinesApi(localNews)
+                getBusinessNewsApi(localNews)
+                getEntertainmentNewsApi(localNews)
+                getGeneralNewsApi(localNews)
+                getHealthNewsApi(localNews)
+                getScienceNewsApi(localNews)
+                getSportsNewsApi(localNews)
+                getTechnologyNewsApi(localNews)
             }
         } catch (e: Exception) {
             return false
@@ -102,112 +126,106 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     fun getSportsNewsLocal(): LiveData<List<NewsTable>> { return repository.readSportsNews() }
     fun getTechnologyNewsLocal(): LiveData<List<NewsTable>> { return repository.readTechnologyNews() }
 
-    private fun getTopHeadLinesApi() {
+    private fun getTopHeadLinesApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readTopHeadlines().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"topHeadlines")
+                repository.readTopHeadlines()
+                Log.d("news1", "getTopHeadLinesApi localrepo: ${repository.readTopHeadlines().value?.size}")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"topHeadlines")
                 repository.addNewses(newNews!!)
             } catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getBusinessNewsApi() {
+    private fun getBusinessNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readBusinessNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"business")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"business")
                 repository.addNewses(newNews!!)
             }
             catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getEntertainmentNewsApi() {
+    private fun getEntertainmentNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readEntertainmentNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"entertainment")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"entertainment")
                 repository.addNewses(newNews!!)
             }
             catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getGeneralNewsApi() {
+    private fun getGeneralNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readGeneralNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"general")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"general")
                 repository.addNewses(newNews!!)
             } catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getHealthNewsApi() {
+    private fun getHealthNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readHealthNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"health")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"health")
                 repository.addNewses(newNews!!)
             }
             catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getScienceNewsApi() {
+    private fun getScienceNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readScienceNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"science")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"science")
                 repository.addNewses(newNews!!)
             }
             catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getSportsNewsApi() {
+    private fun getSportsNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readSportsNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"sports")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"sports")
                 repository.addNewses(newNews!!)
             }
             catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
 
-    private fun getTechnologyNewsApi() {
+    private fun getTechnologyNewsApi(localNews:List<NewsTable>) {
         viewModelScope.launch {
             _status.value = NewsApiStatus.LOADING
             try {
-                val newNews=getOnlyNewNews(repository.readTechnologyNews().value,NewsApi.retrofitService.getTopHeadlinesApi().articles,"technology")
+                val newNews=getOnlyNewNews(localNews,NewsApi.retrofitService.getTopHeadlinesApi().articles,"technology")
                 repository.addNewses(newNews!!)
             }
             catch (e: java.lang.Exception) {
                 _status.value = NewsApiStatus.ERROR
-                _news.value = News(null, "error", 0)
             }
         }
     }
