@@ -1,6 +1,8 @@
 package com.ihsan.news_app.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.NewsTable
@@ -45,20 +48,34 @@ class ArticleAdapter(
         holder.source.text=article.sourceName
         if(article.isBookmarked){
             holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
+            holder.btnBookmark.alpha=.5f
+
         }
 
         holder.btnBookmark.setOnClickListener{
-//            if(article.isBookmarked){
+            if(!article.isBookmarked){
+                holder.btnBookmark.alpha=.5f
                 holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
                 article.isBookmarked=true
                 viewModel.updateNews(article)
-//            }
-//            else{
-//                holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_remove)
-//                article.isBookmarked=false
-//                viewModel.updateNews(article)
-//            }
+            }
+            else{
+                Toast.makeText(context, "false", Toast.LENGTH_SHORT).show()
+                holder.btnBookmark.alpha=1f
+                holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_add)
+                article.isBookmarked=false
+                viewModel.updateNews(article)
+            }
         }
-        Picasso.get().load(article.urlToImage).fit().centerCrop().placeholder(R.drawable.progress_animation).into(holder.image)
+
+        if(!TextUtils.isEmpty(article.urlToImage))
+        {
+            Picasso.get().load(article.urlToImage).fit().centerCrop().placeholder(R.drawable.progress_animation).into(holder.image)
+        }
+        else{
+            holder.image.setImageResource(R.drawable.ic_image)
+        }
+
+        
     }
 }

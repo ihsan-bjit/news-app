@@ -18,7 +18,6 @@ import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
-
 class HomeFragment : Fragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
     val viewModel: NewsviewViewModel by viewModels()
@@ -40,16 +39,15 @@ class HomeFragment : Fragment() {
         refreshLayout = view.findViewById(R.id.swipeLayout)
 
         viewModel.getAllNewsLocal().observe(viewLifecycleOwner){
-            Log.d("newsHome", "onViewCreated: $it")
             if (it.isNotEmpty()) {
                 newsList=it
-                Log.d("newsHome", "onViewCreated home newsList: $newsList")
+                Log.d("newsHome", "onViewCreated home newsList: ${newsList.size}")
                 recyclerView=view.findViewById(R.id.recyclerview)
                 recyclerView.layoutManager=LinearLayoutManager(requireContext())
                 recyclerView.adapter=ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }
             else{
-                Log.d("newsHome", "onViewCreated else roomData: $it")
+                Log.d("newsHome", "onViewCreated else roomData: empty")
             }
         }
         refreshLayout.setOnRefreshListener {

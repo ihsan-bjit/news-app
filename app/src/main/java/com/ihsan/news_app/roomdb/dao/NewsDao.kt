@@ -29,7 +29,7 @@ interface NewsDao {
     @Query("SELECT * FROM news")
     fun readAllNews(): LiveData<List<NewsTable>>
 
-    @Query("SELECT * FROM news WHERE isBookmarked='true'")
+    @Query("SELECT * FROM news WHERE isBookmarked=1")
     fun readBookmarksNews(): LiveData<List<NewsTable>>
 
     @Query("SELECT * FROM news WHERE category='topHeadlines'")

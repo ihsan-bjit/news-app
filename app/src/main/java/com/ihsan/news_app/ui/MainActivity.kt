@@ -1,6 +1,10 @@
 package com.ihsan.news_app.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -28,11 +32,11 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.home-> {
                     replaceFragment(TabLayoutFragment())
-                    Toast.makeText(this, "Read More CLicked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show()
                 }
                 else-> {
                     replaceFragment(BookmarksFragment())
-                    Toast.makeText(this, "Read More CLicked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Bookmarks clicked", Toast.LENGTH_SHORT).show()
                 }
             }
             true
@@ -43,5 +47,26 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container,fragment)
         fragmentTransaction.commit()
+    }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

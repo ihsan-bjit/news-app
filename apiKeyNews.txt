@@ -4,3 +4,9 @@ c66a23e611f54f2eaae2b485b7d2517b
 44367a5ac76040d18bcdcad05709cfef
 0e71f88b221b486c8d6dae580b52344f
 0dbe7f27cb104a7f9cf4bc0b9d45c5e3
+
+
+each fragment individual refresh
+
+Bjit-Ihsan
+git@github.com:BJITAcademy2021/Android_Ihsan_MidTermProject.git
