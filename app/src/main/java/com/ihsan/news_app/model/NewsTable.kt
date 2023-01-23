@@ -1,9 +1,10 @@
 package com.ihsan.news_app.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "news")
+@Entity(tableName = "news",indices = [Index(value = ["url"], unique = true)])
 data class NewsTable(
     @PrimaryKey(autoGenerate = true)
     val id:Int,

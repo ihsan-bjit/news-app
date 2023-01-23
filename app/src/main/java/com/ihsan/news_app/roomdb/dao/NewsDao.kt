@@ -1,6 +1,5 @@
 package com.ihsan.news_app.roomdb.dao
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -8,16 +7,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
-import com.ihsan.news_app.roomdb.db.NewsDatabase
 
 @Dao
 interface NewsDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addNews(news: NewsTable)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addNewses(news: List<NewsTable>)
 
     @Update

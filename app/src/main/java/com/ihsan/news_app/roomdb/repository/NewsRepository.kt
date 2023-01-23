@@ -11,12 +11,8 @@ class NewsRepository(private val newsDao: NewsDao) {
         return newsDao.readAllNews()
     }
 
-    suspend fun addNews(news: NewsTable) {
-        newsDao.addNews(news)
-    }
-
     suspend fun addNewses(news: List<NewsTable>) {
-        newsDao.addNewses(news)
+        return newsDao.addNewses(news)
     }
 
     suspend fun updateNews(news: NewsTable) {
@@ -27,7 +23,7 @@ class NewsRepository(private val newsDao: NewsDao) {
         newsDao.deleteNews(news)
     }
 
-    suspend fun deleteAllNews(news: NewsTable) {
+    suspend fun deleteAllNews() {
         newsDao.deleteAll()
     }
 

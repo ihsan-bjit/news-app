@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -15,6 +16,7 @@ import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentHomeBinding
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -36,22 +38,27 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = view.findViewById(R.id.swipeLayout)
+
+
         viewModel.getAllNewsLocal().observe(viewLifecycleOwner){
             Log.d("home", "onViewCreated: $it")
-            if (it != null) {
+            if (it.isNotEmpty()) {
                 newsList=it
 //                Log.d("TAG", "onViewCreated home newsList: $newsList")
                 recyclerView=view.findViewById(R.id.recyclerview)
                 recyclerView.layoutManager=LinearLayoutManager(requireContext())
                 recyclerView.adapter=ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
-            }else{
+            }
+            else{
                 Log.d("home", "onViewCreated else roomData: $it")
             }
         }
         refreshLayout.setOnRefreshListener {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner){
                 Log.d("news3", "onRefresh: ${it.size}")
-                viewModel.getAllNewsApi(it)
+                viewModel.viewModelScope.launch {
+                    viewModel.getAllNewsApi()
+                }
             }
             Log.d("news3", "onViewCreated: swip to refresh")
             refreshLayout.isRefreshing = false

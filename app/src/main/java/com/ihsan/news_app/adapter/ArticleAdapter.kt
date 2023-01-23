@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
-import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
