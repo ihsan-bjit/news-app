@@ -5,4 +5,6 @@
     <string name="description_short_details">Description Short Details</string>
     <string name="title_name">Title Name</string>
     <string name="source_name">Source Name</string>
+    <string name="status_of_image">status of image</string>
+    <string name="view_pager_card_view">view pager card view</string>
 </resources>

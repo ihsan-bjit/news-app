@@ -2,10 +2,10 @@ package com.ihsan.news_app.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,28 +39,26 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = view.findViewById(R.id.swipeLayout)
 
-
         viewModel.getAllNewsLocal().observe(viewLifecycleOwner){
-            Log.d("home", "onViewCreated: $it")
+            Log.d("newsHome", "onViewCreated: $it")
             if (it.isNotEmpty()) {
                 newsList=it
-//                Log.d("TAG", "onViewCreated home newsList: $newsList")
+                Log.d("newsHome", "onViewCreated home newsList: $newsList")
                 recyclerView=view.findViewById(R.id.recyclerview)
                 recyclerView.layoutManager=LinearLayoutManager(requireContext())
                 recyclerView.adapter=ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }
             else{
-                Log.d("home", "onViewCreated else roomData: $it")
+                Log.d("newsHome", "onViewCreated else roomData: $it")
             }
         }
         refreshLayout.setOnRefreshListener {
-            viewModel.getAllNewsLocal().observe(viewLifecycleOwner){
-                Log.d("news3", "onRefresh: ${it.size}")
+            viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
                 viewModel.viewModelScope.launch {
                     viewModel.getAllNewsApi()
                 }
             }
-            Log.d("news3", "onViewCreated: swip to refresh")
+            Log.d("newsHome", "onViewCreated: swip to refresh")
             refreshLayout.isRefreshing = false
         }
     }
