@@ -1,8 +1,6 @@
 package com.ihsan.news_app.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,13 +18,13 @@ import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
 
-class ArticleAdapter(
+class BookmarkAdapter(
     private val context: Context,
     private val viewModel: NewsviewViewModel,
     private val articleList: ArrayList<NewsTable>
-) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
+) : RecyclerView.Adapter<BookmarkAdapter.BookmarkViewHolder>() {
+    class BookmarkViewHolder(private val binding: View):RecyclerView.ViewHolder(binding){
 
-    class ArticleViewHolder(private val binding: View) : RecyclerView.ViewHolder(binding){
         val title=itemView.findViewById<TextView>(R.id.title)
         val image=itemView.findViewById<ImageView>(R.id.image)
         val descripton=itemView.findViewById<TextView>(R.id.description)
@@ -34,40 +32,27 @@ class ArticleAdapter(
         val btnBookmark=itemView.findViewById<ImageButton>(R.id.bookmarks)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        val root=LayoutInflater.from(parent.context).inflate(R.layout.news_item,parent,false)
-        return ArticleViewHolder(root)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
+        val root= LayoutInflater.from(parent.context).inflate(R.layout.news_item,parent,false)
+        return BookmarkViewHolder(root)
     }
 
     override fun getItemCount(): Int {
-        return articleList.size
+        return  articleList.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
         val article=articleList[position]
-        Log.d("newsAdapter", "onViewCreated adapter: ${articleList.size}")
+        Log.d("newsBookmarkAdapter", "onViewCreated adapter: ${articleList.size}")
         holder.title.text=article.title
         holder.descripton.text=article.description
         holder.source.text=article.sourceName
-        if(article.isBookmarked){
-            holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
-        }
-        else{
-            holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_add)
-        }
+        holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_remove)
 
         holder.btnBookmark.setOnClickListener{
-            if(!article.isBookmarked){
-                holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
-                article.isBookmarked=true
-                viewModel.updateNews(article)
-            }
-            else{
-                Toast.makeText(context, "Bookmarks Removed from ${article.title}", Toast.LENGTH_SHORT).show()
-                article.isBookmarked=false
-                viewModel.updateNews(article)
-            }
+            Toast.makeText(context, "Bookmarks Removed from ${article.title}", Toast.LENGTH_SHORT).show()
+            article.isBookmarked=false
+            viewModel.updateNews(article)
         }
 
         if(!TextUtils.isEmpty(article.urlToImage))
@@ -84,6 +69,5 @@ class ArticleAdapter(
             holder.run { itemView.findNavController().navigate(action) }
             notifyDataSetChanged()
         }
-
     }
 }

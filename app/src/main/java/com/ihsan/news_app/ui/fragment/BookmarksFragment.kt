@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
+import com.ihsan.news_app.adapter.BookmarkAdapter
 import com.ihsan.news_app.databinding.FragmentBookmarksBinding
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
@@ -34,16 +35,14 @@ class BookmarksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getBookmarks().observe(viewLifecycleOwner){
-            Log.d("newsBookmark", "onViewCreated: ${it}")
+            Log.d("newsBookmark", "onViewCreated: ${it.size}")
             if (it.isNotEmpty()) {
                 newsList=it
-//                Log.d("TAG", "onViewCreated home newsList: $newsList")
                 recyclerView=view.findViewById(R.id.recyclerview_bookmarks)
                 recyclerView.layoutManager= LinearLayoutManager(requireContext())
-                recyclerView.adapter=
-                    ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
+                recyclerView.adapter= BookmarkAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }else{
-                Log.d("bookmark", "onViewCreated else roomData: empty")
+                Log.d("newsBookmark", "onViewCreated else roomData: empty")
             }
         }
     }
