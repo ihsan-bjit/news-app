@@ -10,3 +10,8 @@ each fragment individual refresh
 
 Bjit-Ihsan
 git@github.com:BJITAcademy2021/Android_Ihsan_MidTermProject.git
+web view scrollable
+detail view button action
+search bar
+work manager
+pagination

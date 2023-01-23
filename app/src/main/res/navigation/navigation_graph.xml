@@ -8,5 +8,36 @@
         android:id="@+id/tabLayoutFragment"
         android:name="com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragment"
         android:label="fragment_tab_layout"
-        tools:layout="@layout/fragment_tab_layout" />
+        tools:layout="@layout/fragment_tab_layout" >
+        <action
+            android:id="@+id/action_tabLayoutFragment_to_detailNewsViewFragment"
+            app:destination="@id/detailNewsViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailNewsViewFragment"
+        android:name="com.ihsan.news_app.ui.fragment.DetailNewsViewFragment"
+        android:label="fragment_detail_news_view"
+        tools:layout="@layout/fragment_detail_news_view" >
+        <action
+            android:id="@+id/action_detailNewsViewFragment_to_webviewNewsFragment"
+            app:destination="@id/webviewNewsFragment" />
+        <action
+            android:id="@+id/action_detailNewsViewFragment_to_tabLayoutFragment"
+            app:destination="@id/tabLayoutFragment" />
+        <argument
+            android:name="news"
+            app:argType="com.ihsan.news_app.model.NewsTable" />
+    </fragment>
+    <fragment
+        android:id="@+id/webviewNewsFragment"
+        android:name="com.ihsan.news_app.ui.fragment.WebviewNewsFragment"
+        android:label="fragment_webview_news"
+        tools:layout="@layout/fragment_webview_news" >
+        <action
+            android:id="@+id/action_webviewNewsFragment_to_detailNewsViewFragment"
+            app:destination="@id/detailNewsViewFragment" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 </navigation>

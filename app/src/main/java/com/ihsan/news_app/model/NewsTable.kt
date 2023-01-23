@@ -1,10 +1,13 @@
 package com.ihsan.news_app.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "news",indices = [Index(value = ["url"], unique = true)])
+@Parcelize
 data class NewsTable(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
@@ -19,4 +22,4 @@ data class NewsTable(
     val urlToImage: String?,
     val category: String?,
     var isBookmarked:Boolean
-)
+):Parcelable

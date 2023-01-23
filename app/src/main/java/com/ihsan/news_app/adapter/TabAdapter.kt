@@ -8,7 +8,6 @@ import com.ihsan.news_app.model.Tab
 import com.ihsan.news_app.ui.fragment.*
 
 class TabAdapter(manager: FragmentManager, lifecycle:Lifecycle): FragmentStateAdapter(manager,lifecycle) {
-
     companion object{
         val listTab = listOf(
             Tab(HomeFragment(), "Home"),

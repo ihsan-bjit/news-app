@@ -11,9 +11,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
 
@@ -42,26 +44,28 @@ class ArticleAdapter(
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article=articleList[position]
-        Log.d("TAG", "onViewCreated adapter: ${article.title}")
+        Log.d("newsAdapter", "onViewCreated adapter: ${articleList.size}")
         holder.title.text=article.title
         holder.descripton.text=article.description
         holder.source.text=article.sourceName
         if(article.isBookmarked){
             holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
+            holder.btnBookmark.alpha=1f
+        }
+        else{
             holder.btnBookmark.alpha=.5f
-
         }
 
         holder.btnBookmark.setOnClickListener{
             if(!article.isBookmarked){
-                holder.btnBookmark.alpha=.5f
+                holder.btnBookmark.alpha=1f
                 holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
                 article.isBookmarked=true
                 viewModel.updateNews(article)
             }
             else{
                 Toast.makeText(context, "false", Toast.LENGTH_SHORT).show()
-                holder.btnBookmark.alpha=1f
+                holder.btnBookmark.alpha=.5f
                 holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_add)
                 article.isBookmarked=false
                 viewModel.updateNews(article)
@@ -75,7 +79,14 @@ class ArticleAdapter(
         else{
             holder.image.setImageResource(R.drawable.ic_image)
         }
+        holder.itemView.setOnClickListener{
+            val action= article?.let { it1 ->
+                TabLayoutFragmentDirections.actionTabLayoutFragmentToDetailNewsViewFragment(it1)
+            }
+            if (action != null) {
+                holder.itemView.findNavController().navigate(action)
+            }
+        }
 
-        
     }
 }
