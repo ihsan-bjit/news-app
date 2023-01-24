@@ -22,6 +22,10 @@ class DetailNewsViewFragment : Fragment() {
     private lateinit var viewModel: NewsviewViewModel
     private lateinit var binding:FragmentDetailNewsViewBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,4 +76,5 @@ class DetailNewsViewFragment : Fragment() {
             }
         }
     }
+
 }

@@ -24,6 +24,10 @@ class BookmarksFragment : Fragment() {
     lateinit var newsList: List<NewsTable>
     private lateinit var binding:FragmentBookmarksBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,5 +50,8 @@ class BookmarksFragment : Fragment() {
                 Log.d("newsBookmark", "onViewCreated else roomData: empty")
             }
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

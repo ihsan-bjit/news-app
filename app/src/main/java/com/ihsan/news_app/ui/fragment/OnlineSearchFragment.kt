@@ -11,6 +11,10 @@ import com.ihsan.news_app.databinding.FragmentOnlineSearchBinding
 class OnlineSearchFragment : Fragment() {
     private lateinit var binding:FragmentOnlineSearchBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

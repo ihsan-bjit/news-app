@@ -2,11 +2,10 @@ package com.ihsan.news_app.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,31 +23,38 @@ class GeneralFragment : Fragment() {
     private lateinit var viewModel: NewsviewViewModel
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
-    private lateinit var binding:FragmentGeneralBinding
+    private lateinit var binding: FragmentGeneralBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentGeneralBinding.inflate(inflater)
+        binding = FragmentGeneralBinding.inflate(inflater)
         // Inflate the layout for this fragment
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
-        viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
+        viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
-        viewModel.getGeneralNewsLocal().observe(viewLifecycleOwner){
+        viewModel.getGeneralNewsLocal().observe(viewLifecycleOwner) {
             if (it != null) {
-                newsList=it
+                newsList = it
                 Log.d("newsGeneral", "onViewCreated home newsList: ${newsList.size}")
-                recyclerView=binding.recyclerviewGeneral
-                recyclerView.layoutManager= LinearLayoutManager(requireContext())
-                recyclerView.adapter= ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
-            }
-            else{
-                Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT).show()
+                recyclerView = binding.recyclerviewGeneral
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.adapter =
+                    ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+            } else {
+                Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
         refreshLayout.setOnRefreshListener {
@@ -60,5 +66,26 @@ class GeneralFragment : Fragment() {
             Log.d("newsGeneral", "onViewCreated: swipe to refresh")
             refreshLayout.isRefreshing = false
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.top_search, menu)
+        val item = menu.findItem(R.id.topSearchAction)
+        val searchView = item?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+//                    val adapter = recyclerView.adapter as ArticleAdapter
+//                    adapter.filter(newText)
+                }
+                return false
+            }
+        })
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

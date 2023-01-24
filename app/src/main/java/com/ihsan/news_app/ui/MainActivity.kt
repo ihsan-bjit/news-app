@@ -1,55 +1,46 @@
 package com.ihsan.news_app.ui
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.ihsan.news_app.R
-import com.ihsan.news_app.R.*
+import com.ihsan.news_app.R.id
 import com.ihsan.news_app.databinding.ActivityMainBinding
+import com.ihsan.news_app.worker.DataReloadWorker
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private val internetPermissionAccesCode = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //Network check and toast at start up
+        checkINTERNETPermission()
         isOnline(this)
-
-//        val navHostFragment = supportFragmentManager.findFragmentById(id.fragment_container) as NavHostFragment
-//        navController = navHostFragment.findNavController()
-//        setupActionBarWithNavController(navController)
-//        binding.bottomNav.setOnItemSelectedListener {
-//            when(it.itemId){
-//                id.home-> {
-////                    val action = BookmarksFragmentDirections.actionBookmarksFragmentToTabLayoutFragment()
-////                    navController.navigate(action)
-//                    findNavController(R.id.fragment_container).navigate(R.id.tabLayoutFragment)
-//                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-//                }
-//                id.bookmarks-> {
-////                    val action = TabLayoutFragmentDirections.actionTabLayoutFragmentToBookmarksFragment()
-////                    navController.navigate(action)
-//                    findNavController(R.id.fragment_container).navigate(R.id.bookmarksFragment)
-//                    Toast.makeText(this, "Bookmarks", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//            true
-//        }
+        setPeriodicWorkRequest()
         val bottomNavigation: BottomNavigationView = binding.bottomNav
-        navController = findNavController(R.id.fragment_container)
+        navController = findNavController(id.fragment_container)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 id.tabLayoutFragment, id.bookmarksFragment
@@ -85,5 +76,35 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(this, "No Internet Connection Available", Toast.LENGTH_SHORT).show()
         return false
+    }
+
+    private fun setPeriodicWorkRequest() {
+        val workManager = WorkManager.getInstance(applicationContext)
+        val dataLoad = PeriodicWorkRequest
+            .Builder(DataReloadWorker::class.java, 15, TimeUnit.MINUTES)
+            .setInitialDelay(1, TimeUnit.MINUTES)
+            .addTag("ReloadData")
+            .build()
+        workManager.enqueueUniquePeriodicWork(
+            "ReloadData",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            dataLoad
+        )
+    }
+
+    private fun checkINTERNETPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.INTERNET
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.INTERNET),
+                internetPermissionAccesCode
+            )
+        } else {
+            Toast.makeText(this, "INTERNET Permission already given", Toast.LENGTH_SHORT).show()
+        }
     }
 }
