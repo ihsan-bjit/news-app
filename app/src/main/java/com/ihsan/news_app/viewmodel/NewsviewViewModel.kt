@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ihsan.news_app.model.*
 import com.ihsan.news_app.network.NewsApi
@@ -29,8 +28,8 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private var newsDao: NewsDao
 
     //keeping news articles
-    private val _articles = MutableLiveData<List<Article>>()
-    val articles: LiveData<List<Article>?> = _articles
+//    private val _articles = MutableLiveData<List<Article>>()
+//    val articles: LiveData<List<Article>?> = _articles
 
     init {
         //Getting dao instance
