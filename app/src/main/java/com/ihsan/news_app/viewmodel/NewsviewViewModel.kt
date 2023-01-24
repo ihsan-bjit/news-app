@@ -22,8 +22,8 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private val repository: NewsRepository
 
     // setting status
-    private val _status = MutableLiveData<NewsApiStatus>()
-    val status: LiveData<NewsApiStatus> = _status
+//    private val _status = MutableLiveData<NewsApiStatus>()
+//    val status: LiveData<NewsApiStatus> = _status
 
     //Dao Initialize
     private var newsDao: NewsDao
@@ -31,25 +31,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     //keeping news articles
     private val _articles = MutableLiveData<List<Article>>()
     val articles: LiveData<List<Article>?> = _articles
-
-//    private val _home = MutableLiveData<List<Article>>()
-//    val home: LiveData<List<Article>> = _home
-//    private val _topHeadlines = MutableLiveData<List<Article>>()
-//    val topHeadlines: LiveData<List<Article>> = _topHeadlines
-//    private val _business = MutableLiveData<List<Article>>()
-//    val business: LiveData<List<Article>> = _business
-//    private val _entertainment = MutableLiveData<List<Article>>()
-//    val entertainment: LiveData<List<Article>> = _entertainment
-//    private val _general = MutableLiveData<List<Article>>()
-//    val general: LiveData<List<Article>> = _general
-//    private val _health = MutableLiveData<List<Article>>()
-//    val health: LiveData<List<Article>> = _health
-//    private val _science = MutableLiveData<List<Article>>()
-//    val science: LiveData<List<Article>> = _science
-//    private val _sports = MutableLiveData<List<Article>>()
-//    val sports: LiveData<List<Article>> = _sports
-//    private val _technology = MutableLiveData<List<Article>>()
-//    val technology: LiveData<List<Article>> = _technology
 
     init {
         //Getting dao instance
@@ -84,7 +65,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
             Log.d("newsApi", "$category NewsApi Size null return: null")
         }
         val newNewsList = DataConverter().getNewsTable(apiArticleList, category)
-        _status.value = NewsApiStatus.DONE
+//        _status.value = NewsApiStatus.DONE
         Log.d("newsNewApi", "$category New News Size: ${newNewsList.size}")
         repository.addNewses(newNewsList)
     }
@@ -140,14 +121,14 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
 
     private fun getTopHeadLinesApi() {
         viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
+//            _status.value = NewsApiStatus.LOADING
             try {
                 getNewsTableApi(
                     NewsApi.retrofitService.getTopHeadlinesApi().articles,
                     "topHeadlines"
                 )
             } catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
+//                _status.value = NewsApiStatus.ERROR
                 Log.d("newsCatch", "getTopHeadLinesApi: $e")
             }
         }
@@ -156,14 +137,14 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getBusinessNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(
                         NewsApi.retrofitService.getBusinessNewsApi().articles,
                         "business"
                     )
                 } catch (e: java.lang.Exception) {
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                     Log.d("newsCatch", "getBusinessNewsApi: $e")
                 }
             }
@@ -174,14 +155,14 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getEntertainmentNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(
                         NewsApi.retrofitService.getEntertainmentNewsApi().articles,
                         "entertainment"
                     )
                 } catch (e: java.lang.Exception) {
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                     Log.d("newsCatch", "getEntertainmentNewsApi: $e")
                 }
             }
@@ -192,12 +173,12 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getGeneralNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(NewsApi.retrofitService.getGeneralNewsApi().articles, "general")
                 } catch (e: java.lang.Exception) {
                     Log.d("newsCatch", "getGeneralNewsApi: $e")
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                 }
             }
         }
@@ -207,11 +188,11 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getHealthNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(NewsApi.retrofitService.getHealthNewsApi().articles, "health")
                 } catch (e: java.lang.Exception) {
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                     Log.d("newsCatch", "getHealthNewsApi: $e")
                 }
             }
@@ -222,11 +203,11 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getScienceNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(NewsApi.retrofitService.getScienceNewsApi().articles, "science")
                 } catch (e: java.lang.Exception) {
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                     Log.d("newsCatch", "getScienceNewsApi: $e")
                 }
             }
@@ -237,11 +218,11 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getSportsNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(NewsApi.retrofitService.getSportsNewsApi().articles, "sports")
                 } catch (e: java.lang.Exception) {
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                 }
             }
         }
@@ -251,17 +232,16 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     private fun getTechnologyNewsApi() {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
-                _status.value = NewsApiStatus.LOADING
+//                _status.value = NewsApiStatus.LOADING
                 try {
                     getNewsTableApi(
                         NewsApi.retrofitService.getTechnologyNewsApi().articles,
                         "technology"
                     )
                 } catch (e: java.lang.Exception) {
-                    _status.value = NewsApiStatus.ERROR
+//                    _status.value = NewsApiStatus.ERROR
                 }
             }
         }
-
     }
 }
