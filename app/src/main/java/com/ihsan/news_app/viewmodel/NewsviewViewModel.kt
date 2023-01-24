@@ -16,6 +16,7 @@ import kotlinx.coroutines.*
 
 enum class NewsApiStatus { LOADING, ERROR, DONE }
 
+@OptIn(DelicateCoroutinesApi::class)
 class NewsviewViewModel(application: Application) : AndroidViewModel(application) {
     //Initialize repository object
     private val repository: NewsRepository
@@ -56,16 +57,19 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
 
     fun getAllNewsApi():Boolean {
         try {
-            viewModelScope.launch(Dispatchers.IO) {
-                getTopHeadLinesApi()
-                getBusinessNewsApi()
-                getEntertainmentNewsApi()
-                getGeneralNewsApi()
-                getHealthNewsApi()
-                getScienceNewsApi()
-                getSportsNewsApi()
-                getTechnologyNewsApi()
+            GlobalScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
+                    getTopHeadLinesApi()
+                    getBusinessNewsApi()
+                    getEntertainmentNewsApi()
+                    getGeneralNewsApi()
+                    getHealthNewsApi()
+                    getScienceNewsApi()
+                    getSportsNewsApi()
+                    getTechnologyNewsApi()
+                }
             }
+
         } catch (e: Exception) {
             return false
         }
@@ -84,9 +88,12 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun updateNews(news:NewsTable){
-        viewModelScope.launch {
-            repository.updateNews(news)
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.updateNews(news)
+            }
         }
+
     }
 
     fun getBookmarks(): LiveData<List<NewsTable>> { return repository.readBookmarksNews() }
@@ -113,91 +120,113 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun getBusinessNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getBusinessNewsApi().articles,"business")
-            }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
-                Log.d("newsCatch", "getBusinessNewsApi: $e")
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getBusinessNewsApi().articles,"business")
+                }
+                catch (e: java.lang.Exception) {
+                    _status.value = NewsApiStatus.ERROR
+                    Log.d("newsCatch", "getBusinessNewsApi: $e")
+                }
             }
         }
+
     }
 
+
     private fun getEntertainmentNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getEntertainmentNewsApi().articles,"entertainment")
-            }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
-                Log.d("newsCatch", "getEntertainmentNewsApi: $e")
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getEntertainmentNewsApi().articles,"entertainment")
+                }
+                catch (e: java.lang.Exception) {
+                    _status.value = NewsApiStatus.ERROR
+                    Log.d("newsCatch", "getEntertainmentNewsApi: $e")
+                }
             }
         }
+
     }
 
     private fun getGeneralNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getGeneralNewsApi().articles,"general")
-            }
-            catch (e: java.lang.Exception) {
-                Log.d("newsCatch", "getGeneralNewsApi: $e")
-                _status.value = NewsApiStatus.ERROR
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getGeneralNewsApi().articles,"general")
+                }
+                catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getGeneralNewsApi: $e")
+                    _status.value = NewsApiStatus.ERROR
+                }
             }
         }
+
     }
 
     private fun getHealthNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getHealthNewsApi().articles,"health")
-            }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
-                Log.d("newsCatch", "getHealthNewsApi: $e")
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getHealthNewsApi().articles,"health")
+                }
+                catch (e: java.lang.Exception) {
+                    _status.value = NewsApiStatus.ERROR
+                    Log.d("newsCatch", "getHealthNewsApi: $e")
+                }
             }
         }
+
     }
 
     private fun getScienceNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getScienceNewsApi().articles,"science")
-            }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
-                Log.d("newsCatch", "getScienceNewsApi: $e")
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getScienceNewsApi().articles,"science")
+                }
+                catch (e: java.lang.Exception) {
+                    _status.value = NewsApiStatus.ERROR
+                    Log.d("newsCatch", "getScienceNewsApi: $e")
+                }
             }
         }
+
     }
 
     private fun getSportsNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getSportsNewsApi().articles,"sports")
-            }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getSportsNewsApi().articles,"sports")
+                }
+                catch (e: java.lang.Exception) {
+                    _status.value = NewsApiStatus.ERROR
+                }
             }
         }
+
     }
 
     private fun getTechnologyNewsApi() {
-        viewModelScope.launch {
-            _status.value = NewsApiStatus.LOADING
-            try {
-                getNewsTableApi(NewsApi.retrofitService.getTechnologyNewsApi().articles,"technology")
-            }
-            catch (e: java.lang.Exception) {
-                _status.value = NewsApiStatus.ERROR
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                _status.value = NewsApiStatus.LOADING
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getTechnologyNewsApi().articles,"technology")
+                }
+                catch (e: java.lang.Exception) {
+                    _status.value = NewsApiStatus.ERROR
+                }
             }
         }
+
     }
 }

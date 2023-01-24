@@ -1,17 +1,12 @@
 package com.ihsan.news_app.ui.fragment
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.opengl.Visibility
+
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.JavascriptInterface
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity

@@ -11,15 +11,17 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.TabAdapter
 import com.ihsan.news_app.adapter.TabAdapter.Companion.listTab
+import com.ihsan.news_app.databinding.FragmentTabLayoutBinding
 
 class TabLayoutFragment : Fragment() {
-
+    private lateinit var binding: FragmentTabLayoutBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        binding=FragmentTabLayoutBinding.inflate(inflater)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab_layout, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

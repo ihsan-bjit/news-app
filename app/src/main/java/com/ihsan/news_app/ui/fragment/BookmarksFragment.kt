@@ -39,7 +39,7 @@ class BookmarksFragment : Fragment() {
             Log.d("newsBookmark", "onViewCreated: ${it.size}")
             if (it.isNotEmpty()) {
                 newsList=it
-                recyclerView=view.findViewById(R.id.recyclerview_bookmarks)
+                recyclerView=binding.recyclerviewBookmarks
                 recyclerView.layoutManager= LinearLayoutManager(requireContext())
                 recyclerView.adapter= BookmarkAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }else{

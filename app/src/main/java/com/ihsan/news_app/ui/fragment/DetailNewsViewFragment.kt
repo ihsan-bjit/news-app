@@ -8,21 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ihsan.news_app.R
 import com.ihsan.news_app.databinding.FragmentDetailNewsViewBinding
-import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_detail_news_view.*
-import kotlinx.android.synthetic.main.news_item.view.*
+
 
 class DetailNewsViewFragment : Fragment() {
     private val args: DetailNewsViewFragmentArgs by navArgs()
-    private val viewModel: NewsviewViewModel by viewModels()
+    private lateinit var viewModel: NewsviewViewModel
     private lateinit var binding:FragmentDetailNewsViewBinding
 
     override fun onCreateView(
@@ -36,41 +33,40 @@ class DetailNewsViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel=ViewModelProvider(this)[NewsviewViewModel::class.java]
         val article=args.news
 
         if(!TextUtils.isEmpty(article.urlToImage))
         {
-            Picasso.get().load(article.urlToImage).fit().placeholder(R.drawable.progress_animation).into(detail_image)
+            Picasso.get().load(article.urlToImage).fit().placeholder(R.drawable.progress_animation).into(binding.detailImage)
         }
         else{
-            detail_image.setImageResource(R.drawable.ic_image)
+            binding.detailImage.setImageResource(R.drawable.ic_image)
         }
-        detail_title.text=article.title
-        detail_description.text=article.content
-        detail_source.text=article.sourceName
-        btn_card_view_online.setOnClickListener{
-            val action= article?.let { it1 ->
+        binding.detailTitle.text=article.title
+        binding.detailDescription.text=article.content
+        binding.detailSource.text=article.sourceName
+        binding.btnCardViewOnline.setOnClickListener{
+            val action= article.let { it1 ->
                 DetailNewsViewFragmentDirections.actionDetailNewsViewFragmentToWebviewNewsFragment(it1.url.toString())
             }
-            if (action != null) {
-                findNavController().navigate(action)
-            }
+            findNavController().navigate(action)
         }
         if(!article.isBookmarked){
-            detail_bookmarks.setImageResource(R.drawable.ic_bookmark_add)
+            binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_add)
         }
         else{
-            detail_bookmarks.setImageResource(R.drawable.ic_bookmark_remove)
+            binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_remove)
         }
-        detail_bookmarks.setOnClickListener{
+        binding.detailBookmarks.setOnClickListener{
             if(!article.isBookmarked){
-                detail_bookmarks.setImageResource(R.drawable.ic_bookmark_remove)
+                binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_remove)
                 article.isBookmarked=true
                 viewModel.updateNews(article)
             }
             else{
                 Toast.makeText(context, "Bookmarks Removed from ${article.title}", Toast.LENGTH_SHORT).show()
-                detail_bookmarks.setImageResource(R.drawable.ic_bookmark_add)
+                binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_add)
                 article.isBookmarked=false
                 viewModel.updateNews(article)
             }

@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.ui.fragment.BookmarksFragmentDirections
 import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
@@ -64,7 +65,7 @@ class BookmarkAdapter(
         }
         holder.itemView.setOnClickListener{
             val action= article.let { it1 ->
-                TabLayoutFragmentDirections.actionTabLayoutFragmentToDetailNewsViewFragment(it1)
+                BookmarksFragmentDirections.actionBookmarksFragmentToDetailNewsViewFragment(it1)
             }
             holder.itemView.findNavController().navigate(action)
             notifyDataSetChanged()

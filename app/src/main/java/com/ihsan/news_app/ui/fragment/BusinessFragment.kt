@@ -36,14 +36,14 @@ class BusinessFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout = view.findViewById(R.id.swipeLayout)
+        refreshLayout = binding.swipeLayout
         viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner){
             if (it != null) {
                 newsList=it
                 Log.d("newsBusiness", "onViewCreated home newsList: ${newsList.size}")
-                recyclerView=view.findViewById(R.id.recyclerview_business)
+                recyclerView=binding.recyclerviewBusiness
                 recyclerView.layoutManager= LinearLayoutManager(requireContext())
                 recyclerView.adapter= ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }

@@ -32,19 +32,19 @@ class TopHeadlinesFragment : Fragment() {
     ): View? {
         binding=FragmentTopHeadlinesBinding.inflate(inflater)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_headlines, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout = view.findViewById(R.id.swipeLayout)
+        refreshLayout = binding.swipeLayout
         viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getTopHeadlineNewsLocal().observe(viewLifecycleOwner){
             if (it != null) {
                 newsList=it
                 Log.d("newsTopHeadlines", "onViewCreated home newsList: ${newsList.size}")
-                recyclerView=view.findViewById(R.id.recyclerview_topHeadlines)
+                recyclerView=binding.recyclerviewTopHeadlines
                 recyclerView.layoutManager= LinearLayoutManager(requireContext())
                 recyclerView.adapter= ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }

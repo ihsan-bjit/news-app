@@ -17,6 +17,6 @@ class OnlineSearchFragment : Fragment() {
     ): View? {
         binding=FragmentOnlineSearchBinding.inflate(inflater)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_online_search, container, false)
+        return binding.root
     }
 }

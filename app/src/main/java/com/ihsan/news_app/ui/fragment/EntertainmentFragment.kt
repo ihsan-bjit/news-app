@@ -36,7 +36,7 @@ class EntertainmentFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout = view.findViewById(R.id.swipeLayout)
+        refreshLayout = binding.swipeLayout
         viewModel= ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getEntertainmentNewsLocal().observe(viewLifecycleOwner){

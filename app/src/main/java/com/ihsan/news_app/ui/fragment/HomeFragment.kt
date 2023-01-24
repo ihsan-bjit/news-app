@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
-    val viewModel: NewsviewViewModel by viewModels()
+    private lateinit var viewModel: NewsviewViewModel
     private lateinit var recyclerView:RecyclerView
     lateinit var newsList: List<NewsTable>
     private lateinit var binding:FragmentHomeBinding
@@ -37,13 +38,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout = view.findViewById(R.id.swipeLayout)
-
+        refreshLayout = binding.swipeLayout
+        viewModel=ViewModelProvider(this)[NewsviewViewModel::class.java]
         viewModel.getAllNewsLocal().observe(viewLifecycleOwner){
             if (it.isNotEmpty()) {
                 newsList=it
                 Log.d("newsHome", "onViewCreated home newsList: ${newsList.size}")
-                recyclerView=view.findViewById(R.id.recyclerview)
+                recyclerView=binding.recyclerview
                 recyclerView.layoutManager=LinearLayoutManager(requireContext())
                 recyclerView.adapter=ArticleAdapter(requireContext(),viewModel,newsList as ArrayList<NewsTable>)
             }
