@@ -22,12 +22,13 @@ class BookmarksFragment : Fragment() {
     private val viewModel: NewsviewViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
+    private lateinit var binding:FragmentBookmarksBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding=FragmentBookmarksBinding.inflate(inflater)
+        binding=FragmentBookmarksBinding.inflate(inflater)
         // Inflate the layout for this fragment
         return binding.root
     }

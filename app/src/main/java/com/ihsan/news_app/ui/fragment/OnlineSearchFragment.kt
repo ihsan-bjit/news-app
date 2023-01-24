@@ -6,21 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ihsan.news_app.R
+import com.ihsan.news_app.databinding.FragmentOnlineSearchBinding
 
 class OnlineSearchFragment : Fragment() {
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+    private lateinit var binding:FragmentOnlineSearchBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding=FragmentOnlineSearchBinding.inflate(inflater)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_online_search, container, false)
     }

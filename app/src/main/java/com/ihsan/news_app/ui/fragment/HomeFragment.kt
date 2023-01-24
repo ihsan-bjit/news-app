@@ -23,12 +23,13 @@ class HomeFragment : Fragment() {
     val viewModel: NewsviewViewModel by viewModels()
     private lateinit var recyclerView:RecyclerView
     lateinit var newsList: List<NewsTable>
+    private lateinit var binding:FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding=FragmentHomeBinding.inflate(inflater)
+        binding=FragmentHomeBinding.inflate(inflater)
         // Inflate the layout for this fragment
 //        viewModel = ViewModelProvider(requireActivity())[NewsviewViewModel::class.java]
         return binding.root

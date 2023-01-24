@@ -66,7 +66,7 @@ class BookmarkAdapter(
             val action= article.let { it1 ->
                 TabLayoutFragmentDirections.actionTabLayoutFragmentToDetailNewsViewFragment(it1)
             }
-            holder.run { itemView.findNavController().navigate(action) }
+            holder.itemView.findNavController().navigate(action)
             notifyDataSetChanged()
         }
     }

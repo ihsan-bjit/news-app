@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ihsan.news_app.R
+import com.ihsan.news_app.databinding.FragmentDetailNewsViewBinding
 import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
@@ -22,15 +23,15 @@ import kotlinx.android.synthetic.main.news_item.view.*
 class DetailNewsViewFragment : Fragment() {
     private val args: DetailNewsViewFragmentArgs by navArgs()
     private val viewModel: NewsviewViewModel by viewModels()
+    private lateinit var binding:FragmentDetailNewsViewBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
+        binding=FragmentDetailNewsViewBinding.inflate(inflater)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_news_view, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
