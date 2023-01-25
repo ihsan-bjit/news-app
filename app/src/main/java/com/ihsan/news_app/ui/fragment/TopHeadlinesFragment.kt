@@ -83,9 +83,9 @@ class TopHeadlinesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-//                    val adapter = re?.adapter as ArticleAdapter
-//                    adapter.filter(newText)
+                if (!newText.isNullOrEmpty()) {
+                    val adapter = re?.adapter as ArticleAdapter
+                    adapter.filter(newText)
                 }
                 return false
             }

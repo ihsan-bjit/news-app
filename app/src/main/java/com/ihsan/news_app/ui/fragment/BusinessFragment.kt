@@ -1,9 +1,11 @@
 package com.ihsan.news_app.ui.fragment
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -27,6 +29,8 @@ class BusinessFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+
     }
 
     override fun onCreateView(
@@ -73,9 +77,9 @@ class BusinessFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    // val adapter = binding.recyclerviewBusiness.adapter as ArticleAdapter
-                    //adapter.filter(newText)
+                if (!newText.isNullOrEmpty()) {
+                     val adapter = binding.recyclerviewBusiness.adapter as ArticleAdapter
+                    adapter.filter(newText)
                 }
                 return false
             }

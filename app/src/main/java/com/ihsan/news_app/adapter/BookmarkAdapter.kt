@@ -1,5 +1,6 @@
 package com.ihsan.news_app.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
@@ -15,10 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.ui.fragment.BookmarksFragmentDirections
-import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
-
+@SuppressLint("NotifyDataSetChanged")
 class BookmarkAdapter(
     private val context: Context,
     private val viewModel: NewsviewViewModel,
@@ -26,11 +26,11 @@ class BookmarkAdapter(
 ) : RecyclerView.Adapter<BookmarkAdapter.BookmarkViewHolder>() {
     class BookmarkViewHolder(private val binding: View):RecyclerView.ViewHolder(binding){
 
-        val title=itemView.findViewById<TextView>(R.id.title)
-        val image=itemView.findViewById<ImageView>(R.id.image)
-        val descripton=itemView.findViewById<TextView>(R.id.description)
-        val source=itemView.findViewById<TextView>(R.id.source)
-        val btnBookmark=itemView.findViewById<ImageButton>(R.id.bookmarks)
+        val title:TextView=itemView.findViewById(R.id.title)
+        val image:ImageView=itemView.findViewById(R.id.image)
+        val description:TextView=itemView.findViewById(R.id.description)
+        val source:TextView=itemView.findViewById(R.id.source)
+        val btnBookmark:ImageButton=itemView.findViewById(R.id.bookmarks)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
@@ -46,7 +46,7 @@ class BookmarkAdapter(
         val article=articleList[position]
         Log.d("newsBookmarkAdapter", "onViewCreated adapter: ${articleList.size}")
         holder.title.text=article.title
-        holder.descripton.text=article.description
+        holder.description.text=article.description
         holder.source.text=article.sourceName
         holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_remove)
 

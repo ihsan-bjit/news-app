@@ -7,4 +7,7 @@
     <string name="source_name">Source Name</string>
     <string name="status_of_image">status of image</string>
     <string name="view_pager_card_view">view pager card view</string>
+    <string name="status">status</string>
+    <string name="bookmark_button">bookmark button</string>
+    <string name="image_view">image view</string>
 </resources>

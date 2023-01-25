@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     private fun setPeriodicWorkRequest() {
         val workManager = WorkManager.getInstance(applicationContext)
         val dataLoad = PeriodicWorkRequest
-            .Builder(DataReloadWorker::class.java, 300, TimeUnit.MINUTES)
+            .Builder(DataReloadWorker::class.java, 15, TimeUnit.MINUTES)
             .setInitialDelay(1, TimeUnit.MINUTES)
             .addTag("ReloadData")
             .build()

@@ -79,9 +79,9 @@ class GeneralFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-//                    val adapter = recyclerView.adapter as ArticleAdapter
-//                    adapter.filter(newText)
+                if (!newText.isNullOrEmpty()) {
+                    val adapter = recyclerView.adapter as ArticleAdapter
+                    adapter.filter(newText)
                 }
                 return false
             }
