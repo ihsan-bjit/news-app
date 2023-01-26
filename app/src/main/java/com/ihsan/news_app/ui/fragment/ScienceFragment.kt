@@ -42,16 +42,16 @@ class ScienceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
+        recyclerView = binding.recyclerviewScience
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getScienceNewsLocal().observe(viewLifecycleOwner) {
-            newsList = it
-            Log.d("newsScience", "onViewCreated home newsList: ${newsList.size}")
-            recyclerView = binding.recyclerviewScience
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            Log.d("newsScience", "onViewCreated home newsList: ${it.size}")
+
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =
-                ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+                ArticleAdapter(it)
             if (it.isEmpty()) {
                 Log.d("newsScience", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()

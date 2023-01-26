@@ -92,7 +92,7 @@
                     android:maxWidth="220dp"
                     android:maxLines="1"
                     android:paddingTop="3dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="italic"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/bookmarks"

@@ -1,11 +1,9 @@
 package com.ihsan.news_app.ui.fragment
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -30,8 +28,6 @@ class BusinessFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-
     }
 
     override fun onCreateView(
@@ -48,15 +44,15 @@ class BusinessFragment : Fragment() {
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
+        recyclerView = binding.recyclerviewBusiness
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
         viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner) {
-            recyclerView = binding.recyclerviewBusiness
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.setHasFixedSize(true)
-            newsList = it
-            Log.d("newsBusiness", "onViewCreated home newsList: ${newsList.size}")
+            Log.d("newsBusiness", "onViewCreated home newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-            recyclerView.adapter = ArticleAdapter(requireContext(), viewModel, newsList)
+            recyclerView.adapter = ArticleAdapter(it)
             if (it.isEmpty()) {
                 viewModel.getAllNewsApi()
                 Log.d("newsBusiness", "onViewCreated with empty roomData: APi Call ")

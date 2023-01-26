@@ -5,7 +5,6 @@ import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.roomdb.dao.NewsDao
 
 class NewsRepository(private val newsDao: NewsDao) {
-    val readAllNews: LiveData<List<NewsTable>> = newsDao.readAllNews()
 
     fun getAllNews(): LiveData<List<NewsTable>> {
         return newsDao.readAllNews()
@@ -17,10 +16,6 @@ class NewsRepository(private val newsDao: NewsDao) {
 
     suspend fun updateNews(news: NewsTable) {
         newsDao.updateNews(news)
-    }
-
-    suspend fun deleteNews(news: NewsTable) {
-        newsDao.deleteNews(news)
     }
 
     suspend fun deleteAllNews() {

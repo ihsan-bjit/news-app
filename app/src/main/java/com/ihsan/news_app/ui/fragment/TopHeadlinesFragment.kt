@@ -42,18 +42,17 @@ class TopHeadlinesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
+        refreshLayout = binding.swipeLayout
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
 
         viewModel.getTopHeadlineNewsLocal().observe(viewLifecycleOwner) {
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.setHasFixedSize(true)
-            newsList = it
-            Log.d("newsTopHeadlines", "onViewCreated home newsList: ${newsList.size}")
+            Log.d("newsTopHeadlines", "onViewCreated home newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =
-                ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+                ArticleAdapter(it)
             if (it.isEmpty()) {
                 Log.d("newsTopHeadlines", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()

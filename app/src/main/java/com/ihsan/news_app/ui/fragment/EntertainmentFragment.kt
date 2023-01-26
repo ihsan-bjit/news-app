@@ -44,15 +44,14 @@ class EntertainmentFragment : Fragment() {
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
+        recyclerView = binding.recyclerviewEntertainment
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getEntertainmentNewsLocal().observe(viewLifecycleOwner) {
-            newsList = it
-            Log.d("newsEntertainment", "onViewCreated newsList: ${newsList.size}")
+            Log.d("newsEntertainment", "onViewCreated newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-            recyclerView = view.findViewById(R.id.recyclerview_entertainment)
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter =
-                ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+                ArticleAdapter(it)
             if (it.isEmpty()) {
                 Log.d("newsEntertainment", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()

@@ -43,16 +43,16 @@ class SportsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
+        recyclerView = binding.recyclerviewSports
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getSportsNewsLocal().observe(viewLifecycleOwner) {
-            newsList = it
-            Log.d("newsSports", "onViewCreated home newsList: ${newsList.size}")
-            recyclerView = binding.recyclerviewSports
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            Log.d("newsSports", "onViewCreated home newsList: ${it.size}")
+
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =
-                ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+                ArticleAdapter(it)
             if (it.isEmpty()) {
                 Log.d("newsSports", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()
