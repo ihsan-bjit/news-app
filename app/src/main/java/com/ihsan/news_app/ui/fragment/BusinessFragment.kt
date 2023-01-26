@@ -54,6 +54,10 @@ class BusinessFragment : Fragment() {
             newsList = it
             Log.d("newsBusiness", "onViewCreated home newsList: ${newsList.size}")
             recyclerView.adapter = ArticleAdapter(requireContext(), viewModel, newsList)
+            if (it.isEmpty()) {
+                viewModel.getAllNewsApi()
+                Log.d("newsBusiness", "onViewCreated with empty roomData: APi Call ")
+            }
         }
         refreshLayout.setOnRefreshListener {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {

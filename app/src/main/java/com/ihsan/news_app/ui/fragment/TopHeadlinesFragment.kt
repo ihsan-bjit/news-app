@@ -46,17 +46,15 @@ class TopHeadlinesFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getTopHeadlineNewsLocal().observe(viewLifecycleOwner) {
-            if (it != null) {
-
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.setHasFixedSize(true)
                 newsList = it
                 Log.d("newsTopHeadlines", "onViewCreated home newsList: ${newsList.size}")
                 recyclerView.adapter =
                     ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
-            } else {
-                Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT)
-                    .show()
+            if (it.isEmpty()) {
+                Log.d("newsTopHeadlines", "onViewCreated with empty roomData: APi Call ")
+                viewModel.getAllNewsApi()
             }
         }
         refreshLayout.setOnRefreshListener {

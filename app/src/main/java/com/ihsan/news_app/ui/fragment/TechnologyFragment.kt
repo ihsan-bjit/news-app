@@ -45,16 +45,15 @@ class TechnologyFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getTechnologyNewsLocal().observe(viewLifecycleOwner) {
-            if (it != null) {
                 newsList = it
                 Log.d("newsTechnology", "onViewCreated home newsList: ${newsList.size}")
                 recyclerView = binding.recyclerviewTechnology
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.adapter =
                     ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
-            } else {
-                Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT)
-                    .show()
+            if (it.isEmpty()) {
+                Log.d("newsTechnology", "onViewCreated with empty roomData: APi Call ")
+                viewModel.getAllNewsApi()
             }
         }
         refreshLayout.setOnRefreshListener {

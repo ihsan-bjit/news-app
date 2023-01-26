@@ -38,37 +38,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         repository = NewsRepository(newsDao)
     }
 
-    fun getAllNewsApi(): Boolean {
-        try {
-            GlobalScope.launch {
-                viewModelScope.launch(Dispatchers.IO) {
-                    getTopHeadLinesApi()
-                    getBusinessNewsApi()
-                    getEntertainmentNewsApi()
-                    getGeneralNewsApi()
-                    getHealthNewsApi()
-                    getScienceNewsApi()
-                    getSportsNewsApi()
-                    getTechnologyNewsApi()
-                }
-            }
-
-        } catch (e: Exception) {
-            return false
-        }
-        return true
-    }
-
-    suspend fun getNewsTableApi(apiArticleList: List<Article>?, category: String) {
-        if (apiArticleList == null) {
-            Log.d("newsApi", "$category NewsApi Size null return: null")
-        }
-        val newNewsList = DataConverter().getNewsTable(apiArticleList, category)
-//        _status.value = NewsApiStatus.DONE
-        Log.d("newsNewApi", "$category New News Size: ${newNewsList.size}")
-        repository.addNewses(newNewsList)
-    }
-
     fun updateNews(news: NewsTable) {
         GlobalScope.launch {
             viewModelScope.launch(Dispatchers.IO) {
@@ -116,6 +85,41 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
 
     fun getTechnologyNewsLocal(): LiveData<List<NewsTable>> {
         return repository.readTechnologyNews()
+    }
+
+    fun getAllNewsApi(): Boolean {
+        try {
+            GlobalScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
+
+                    getTopHeadLinesApi()
+                    getBusinessNewsApi()
+                    getEntertainmentNewsApi()
+                    getGeneralNewsApi()
+                    getHealthNewsApi()
+                    getScienceNewsApi()
+                    getSportsNewsApi()
+                    getTechnologyNewsApi()
+                    Log.d("newsViewModel", "getAllNewsApiTry: ")
+                    delay(5000)
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.d("newsViewModel", "getAllNewsApiException: $e")
+            return false
+        }
+        return true
+    }
+
+    suspend fun getNewsTableApi(apiArticleList: List<Article>?, category: String) {
+        if (apiArticleList == null) {
+            Log.d("newsApi", "$category NewsApi Size null return: null")
+        }
+        val newNewsList = DataConverter().getNewsTable(apiArticleList, category)
+//        _status.value = NewsApiStatus.DONE
+        Log.d("newsNewApi", "$category New News Size: ${newNewsList.size}")
+        repository.addNewses(newNewsList)
     }
 
     private fun getTopHeadLinesApi() {

@@ -3,7 +3,6 @@ package com.ihsan.news_app.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -45,16 +44,15 @@ class HealthFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getHealthNewsLocal().observe(viewLifecycleOwner) {
-            if (it != null) {
-                newsList = it
-                Log.d("newsHealth", "onViewCreated home newsList: ${newsList.size}")
-                recyclerView = binding.recyclerviewHealth
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter =
-                    ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
-            } else {
-                Toast.makeText(requireContext(), "Data not fetched from api", Toast.LENGTH_SHORT)
-                    .show()
+            newsList = it
+            Log.d("newsHealth", "onViewCreated home newsList: ${newsList.size}")
+            recyclerView = binding.recyclerviewHealth
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.adapter =
+                ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+            if (it.isEmpty()) {
+                Log.d("newsHealth", "onViewCreated with empty roomData: APi Call ")
+                viewModel.getAllNewsApi()
             }
         }
         refreshLayout.setOnRefreshListener {

@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL="https://newsapi.org/v2/"
-private const val API_KEY="c66a23e611f54f2eaae2b485b7d2517b"
+private const val API_KEY="44367a5ac76040d18bcdcad05709cfef"
 private const val PARAMETER="country=us&"
 private val moshi=Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 private val retrofit=Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi)).baseUrl(BASE_URL).build()

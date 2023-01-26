@@ -45,16 +45,16 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
+
                 recyclerView = binding.recyclerview
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.setHasFixedSize(true)
                 newsList = it
                 Log.d("newsHome", "onViewCreated home newsList: ${newsList.size}")
                 recyclerView.adapter = ArticleAdapter(requireContext(), viewModel, newsList)
-            } else {
+            if (it.isEmpty()) {
+                Log.d("newsHome", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()
-                Log.d("newsHome", "onViewCreated else roomData: empty")
             }
         }
         refreshLayout.setOnRefreshListener {
