@@ -53,6 +53,7 @@ class HomeFragment : Fragment() {
                 Log.d("newsHome", "onViewCreated home newsList: ${newsList.size}")
                 recyclerView.adapter = ArticleAdapter(requireContext(), viewModel, newsList)
             } else {
+                viewModel.getAllNewsApi()
                 Log.d("newsHome", "onViewCreated else roomData: empty")
             }
         }
