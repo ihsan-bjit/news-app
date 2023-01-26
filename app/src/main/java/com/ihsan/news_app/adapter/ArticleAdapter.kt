@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.ui.fragment.viewpager.TabLayoutFragmentDirections
+import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -50,7 +51,8 @@ class ArticleAdapter(
         Log.d("newsAdapter", "onViewCreated adapter: ${filterList.size}")
         holder.title.text=article.title
         holder.description.text=article.description
-        holder.source.text=article.sourceName
+        val source=article.sourceName?.split(".")
+        holder.source.text="${source?.get(0)}·${Utils().timeAgoConverter(article.publishedAt.toString())}"
         if(article.isBookmarked){
             holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_added)
         }

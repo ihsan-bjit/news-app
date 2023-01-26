@@ -3,7 +3,6 @@ package com.ihsan.news_app.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +14,7 @@ import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentScienceBinding
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
@@ -44,12 +44,14 @@ class ScienceFragment : Fragment() {
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
         viewModel.getScienceNewsLocal().observe(viewLifecycleOwner) {
-                newsList = it
-                Log.d("newsScience", "onViewCreated home newsList: ${newsList.size}")
-                recyclerView = binding.recyclerviewScience
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter =
-                    ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
+            newsList = it
+            Log.d("newsScience", "onViewCreated home newsList: ${newsList.size}")
+            recyclerView = binding.recyclerviewScience
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+            recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
+            recyclerView.adapter =
+                ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
             if (it.isEmpty()) {
                 Log.d("newsScience", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()
@@ -59,6 +61,7 @@ class ScienceFragment : Fragment() {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
                 viewModel.viewModelScope.launch {
                     viewModel.getAllNewsApi()
+                    Utils().refreshMessage()
                 }
             }
             Log.d("newsScience", "onViewCreated: swipe to refresh")

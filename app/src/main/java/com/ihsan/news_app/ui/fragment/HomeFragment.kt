@@ -14,6 +14,7 @@ import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentHomeBinding
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
@@ -43,14 +44,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-
         viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
-
                 recyclerView = binding.recyclerview
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.setHasFixedSize(true)
                 newsList = it
                 Log.d("newsHome", "onViewCreated home newsList: ${newsList.size}")
+                val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+                recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
                 recyclerView.adapter = ArticleAdapter(requireContext(), viewModel, newsList)
             if (it.isEmpty()) {
                 Log.d("newsHome", "onViewCreated with empty roomData: APi Call ")
@@ -61,6 +62,7 @@ class HomeFragment : Fragment() {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
                 viewModel.viewModelScope.launch {
                     viewModel.getAllNewsApi()
+                    Utils().refreshMessage()
                 }
             }
             Log.d("newsHome", "onViewCreated: swip to refresh")

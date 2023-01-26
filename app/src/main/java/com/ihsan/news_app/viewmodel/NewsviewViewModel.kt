@@ -2,6 +2,7 @@ package com.ihsan.news_app.viewmodel
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.ihsan.news_app.roomdb.dao.NewsDao
 import com.ihsan.news_app.roomdb.data.DataConverter
 import com.ihsan.news_app.roomdb.db.NewsDatabase
 import com.ihsan.news_app.roomdb.repository.NewsRepository
+import com.ihsan.news_app.utils.MyApplication
 import kotlinx.coroutines.*
 
 enum class NewsApiStatus { LOADING, ERROR, DONE }
@@ -100,7 +102,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                     getScienceNewsApi()
                     getSportsNewsApi()
                     getTechnologyNewsApi()
-                    Log.d("newsViewModel", "getAllNewsApiTry: ")
+                    Log.d("newsViewModel", "getAllNewsApiTry: Api Hit")
                     delay(5000)
                 }
             }

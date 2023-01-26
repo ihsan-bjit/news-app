@@ -1,10 +1,19 @@
 package com.ihsan.news_app.utils
 
+import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.ihsan.news_app.ui.MainActivity
 
 
 class CheckNetwork {
@@ -33,4 +42,38 @@ class CheckNetwork {
         Toast.makeText(instance, "No Internet Connection Available", Toast.LENGTH_SHORT).show()
         return false
     }
+
+    fun checkINTERNETPermission() {
+        if (ContextCompat.checkSelfPermission(
+                MyApplication.instance,
+                Manifest.permission.INTERNET
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            ActivityCompat.requestPermissions(
+                MainActivity(),
+                arrayOf(Manifest.permission.INTERNET),
+                Constant.internetPermissionAccesCode
+            )
+        } else {
+            Toast.makeText(MyApplication.instance, "INTERNET Permission Granted", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun networkReceiver():BroadcastReceiver{
+        val networkReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeNetwork = connectivityManager.activeNetworkInfo
+                val isConnected = activeNetwork?.isConnected == true
+                if (!isConnected) {
+                    Toast.makeText(MyApplication.instance, "Internet is not connected", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(MyApplication.instance, "Internet is connected", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        return networkReceiver
+    }
+
+
 }

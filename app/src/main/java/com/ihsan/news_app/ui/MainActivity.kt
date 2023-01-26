@@ -1,7 +1,12 @@
 package com.ihsan.news_app.ui
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,11 +23,9 @@ import androidx.work.WorkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ihsan.news_app.R.id
 import com.ihsan.news_app.databinding.ActivityMainBinding
-import com.ihsan.news_app.utils.Constant
-import com.ihsan.news_app.utils.CheckNetwork
+import com.ihsan.news_app.utils.*
 import com.ihsan.news_app.worker.DataReloadWorker
 import java.util.concurrent.TimeUnit
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -33,10 +36,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(CheckNetwork().networkReceiver(), filter)
+
         //Network check and toast at start up
-        checkINTERNETPermission()
-        CheckNetwork().isOnline()
-        setPeriodicWorkRequest()
+        CheckNetwork().checkINTERNETPermission()
+        WorkRequest().setPeriodicWorkRequest()
 
         val bottomNavigation: BottomNavigationView = binding.bottomNav
         navController = findNavController(id.fragment_container)
@@ -47,6 +52,24 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)
+    }
+
+    private val networkReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork = connectivityManager.activeNetworkInfo
+            val isConnected = activeNetwork?.isConnected == true
+            if (!isConnected) {
+                Toast.makeText(MyApplication.instance, "Internet is not connected", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(MyApplication.instance, "Internet is connected", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(networkReceiver)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -65,21 +88,5 @@ class MainActivity : AppCompatActivity() {
             ExistingPeriodicWorkPolicy.REPLACE,
             dataLoad
         )
-    }
-
-    private fun checkINTERNETPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.INTERNET
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.INTERNET),
-                Constant.internetPermissionAccesCode
-            )
-        } else {
-            Toast.makeText(this, "INTERNET Permission already given", Toast.LENGTH_SHORT).show()
-        }
     }
 }

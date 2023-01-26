@@ -16,6 +16,7 @@ import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentBusinessBinding
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
@@ -53,6 +54,8 @@ class BusinessFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
             newsList = it
             Log.d("newsBusiness", "onViewCreated home newsList: ${newsList.size}")
+            val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+            recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter = ArticleAdapter(requireContext(), viewModel, newsList)
             if (it.isEmpty()) {
                 viewModel.getAllNewsApi()
@@ -63,6 +66,7 @@ class BusinessFragment : Fragment() {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
                 viewModel.viewModelScope.launch {
                     viewModel.getAllNewsApi()
+                    Utils().refreshMessage()
                 }
             }
             Log.d("newsBusiness", "onViewCreated: swipe to refresh")

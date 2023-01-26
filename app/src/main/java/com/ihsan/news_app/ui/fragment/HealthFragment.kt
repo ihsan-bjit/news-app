@@ -14,6 +14,7 @@ import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentHealthBinding
 import com.ihsan.news_app.model.NewsTable
+import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
@@ -48,6 +49,8 @@ class HealthFragment : Fragment() {
             Log.d("newsHealth", "onViewCreated home newsList: ${newsList.size}")
             recyclerView = binding.recyclerviewHealth
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+            recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =
                 ArticleAdapter(requireContext(), viewModel, newsList as ArrayList<NewsTable>)
             if (it.isEmpty()) {
@@ -59,6 +62,7 @@ class HealthFragment : Fragment() {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
                 viewModel.viewModelScope.launch {
                     viewModel.getAllNewsApi()
+                    Utils().refreshMessage()
                 }
             }
             Log.d("newsHealth", "onViewCreated: swipe to refresh")
