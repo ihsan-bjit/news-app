@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ihsan.news_app.R
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.ui.fragment.BookmarksFragmentDirections
@@ -51,7 +52,7 @@ class BookmarkAdapter(
         holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_remove)
 
         holder.btnBookmark.setOnClickListener{
-            Toast.makeText(context, "Bookmarks Removed from ${article.title}", Toast.LENGTH_SHORT).show()
+            Snackbar.make(it, "Bookmarks Removed from ${article.title}", Snackbar.LENGTH_SHORT).show()
             article.isBookmarked=false
             viewModel.updateNews(article)
         }

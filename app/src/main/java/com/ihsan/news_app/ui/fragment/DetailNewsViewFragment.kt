@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.ihsan.news_app.R
 import com.ihsan.news_app.databinding.FragmentDetailNewsViewBinding
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
@@ -63,13 +64,14 @@ class DetailNewsViewFragment : Fragment() {
             binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_remove)
         }
         binding.detailBookmarks.setOnClickListener{
+
             if(!article.isBookmarked){
                 binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_remove)
                 article.isBookmarked=true
                 viewModel.updateNews(article)
             }
             else{
-                Toast.makeText(context, "Bookmarks Removed from ${article.title}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(it, "Bookmarks Removed from ${article.title}", Snackbar.LENGTH_SHORT).show()
                 binding.detailBookmarks.setImageResource(R.drawable.ic_bookmark_add)
                 article.isBookmarked=false
                 viewModel.updateNews(article)

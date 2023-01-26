@@ -10,4 +10,7 @@
     <string name="status">status</string>
     <string name="bookmark_button">bookmark button</string>
     <string name="image_view">image view</string>
+    <string name="detail_image">detail image</string>
+    <string name="view_online">VIEW ONLINE</string>
+    <string name="large_detail_image">Large detail image</string>
 </resources>

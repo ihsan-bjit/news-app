@@ -32,7 +32,6 @@
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:backgroundTint="#A8D4CE"
             app:menu="@menu/bottom_navigation" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

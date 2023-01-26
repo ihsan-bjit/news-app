@@ -8,11 +8,14 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
+import com.ihsan.news_app.R
 import com.ihsan.news_app.ui.MainActivity
 
 
@@ -67,8 +70,9 @@ class CheckNetwork {
                 val isConnected = activeNetwork?.isConnected == true
                 if (!isConnected) {
                     Toast.makeText(MyApplication.instance, "Internet is not connected", Toast.LENGTH_SHORT).show()
-                }else{
+                }else if(isConnected){
                     Toast.makeText(MyApplication.instance, "Internet is connected", Toast.LENGTH_SHORT).show()
+//                    Snackbar.make(View(MainActivity()), "Internet is connected", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
