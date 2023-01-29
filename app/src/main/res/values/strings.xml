@@ -1,5 +1,16 @@
 <resources>
-    <string name="app_name">news-app</string>
+    <string name="app_name">newsDaily</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_short_details">Description Short Details</string>
+    <string name="title_name">Title Name</string>
+    <string name="source_name">Source Name</string>
+    <string name="status_of_image">status of image</string>
+    <string name="view_pager_card_view">view pager card view</string>
+    <string name="status">status</string>
+    <string name="bookmark_button">bookmark button</string>
+    <string name="image_view">image view</string>
+    <string name="detail_image">detail image</string>
+    <string name="view_online">VIEW ONLINE</string>
+    <string name="large_detail_image">Large detail image</string>
 </resources>

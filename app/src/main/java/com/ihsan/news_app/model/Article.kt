@@ -1,5 +1,4 @@
 package com.ihsan.news_app.model
-
 data class Article(
     val author: String?,
     val content: String?,

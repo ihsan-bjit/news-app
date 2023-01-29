@@ -1,40 +1,230 @@
 package com.ihsan.news_app.viewmodel
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ihsan.news_app.model.Article
-import com.ihsan.news_app.model.News
+import com.ihsan.news_app.model.*
 import com.ihsan.news_app.network.NewsApi
+import com.ihsan.news_app.roomdb.dao.NewsDao
+import com.ihsan.news_app.roomdb.data.DataConverter
+import com.ihsan.news_app.roomdb.db.NewsDatabase
+import com.ihsan.news_app.roomdb.repository.NewsRepository
+import com.ihsan.news_app.utils.MyApplication
 import kotlinx.coroutines.*
 
 enum class NewsApiStatus { LOADING, ERROR, DONE }
 
-class NewsviewViewModel: ViewModel() {
-    private val _news = MutableLiveData<News>()
-    val news: LiveData<News> = _news
-    private val _articles = MutableLiveData<List<Article>?>()
-    val articles: LiveData<List<Article>?> = _articles
-    private val _status = MutableLiveData<NewsApiStatus>()
-    val status: LiveData<NewsApiStatus> = _status
+@OptIn(DelicateCoroutinesApi::class)
+class NewsviewViewModel(application: Application) : AndroidViewModel(application) {
+    //Initialize repository object
+    private val repository: NewsRepository
+
+    //Dao Initialize
+    private var newsDao: NewsDao
+
+    val getAllNewsLocal: LiveData<List<NewsTable>>
 
     init {
-        getNews()
+        //Getting dao instance
+        newsDao = NewsDatabase.getDatabase(application).newsDao()
+        //Assigning dao object to repository instance
+        repository = NewsRepository(newsDao)
+        getAllNewsLocal = repository.getAllNews()
     }
 
-    private fun getNews(){
+    fun updateNews(news: NewsTable) {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.updateNews(news)
+            }
+        }
+    }
+
+    fun getBookmarks(): LiveData<List<NewsTable>> {
+        return repository.readBookmarksNews()
+    }
+
+    fun getAllNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.getAllNews()
+    }
+    fun getTopHeadlineNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readTopHeadlines()
+    }
+
+    fun getBusinessNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readBusinessNews()
+    }
+
+    fun getEntertainmentNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readEntertainmentNews()
+    }
+
+    fun getGeneralNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readGeneralNews()
+    }
+
+    fun getHealthNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readHealthNews()
+    }
+
+    fun getScienceNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readScienceNews()
+    }
+
+    fun getSportsNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readSportsNews()
+    }
+
+    fun getTechnologyNewsLocal(): LiveData<List<NewsTable>> {
+        return repository.readTechnologyNews()
+    }
+
+    fun getAllNewsApi(): Boolean {
+        try {
+            GlobalScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
+
+                    getTopHeadLinesApi()
+                    getBusinessNewsApi()
+                    getEntertainmentNewsApi()
+                    getGeneralNewsApi()
+                    getHealthNewsApi()
+                    getScienceNewsApi()
+                    getSportsNewsApi()
+                    getTechnologyNewsApi()
+                    Log.d("newsViewModel", "getAllNewsApiTry: Api Hit")
+                    delay(5000)
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.d("newsViewModel", "getAllNewsApiException: $e")
+            return false
+        }
+        return true
+    }
+
+    suspend fun getNewsTableApi(apiArticleList: List<Article>?, category: String) {
+        if (apiArticleList == null) {
+            Log.d("newsApi", "$category NewsApi Size null return: null")
+        }
+        val newNewsList = DataConverter().getNewsTable(apiArticleList, category)
+//        _status.value = NewsApiStatus.DONE
+        Log.d("newsNewApi", "$category New News Size: ${newNewsList.size}")
+        repository.addNewses(newNewsList)
+    }
+
+    private fun getTopHeadLinesApi() {
         viewModelScope.launch {
-            _status.value=NewsApiStatus.LOADING
             try {
-                _news.value=NewsApi.retrofitService.getNews()
-                _articles.value= _news.value!!.articles
-                Log.d("TAG", "getNews: ${_news.value!!.articles?.size}")
-                _status.value=NewsApiStatus.DONE
-            }catch (e: java.lang.Exception){
-                _status.value=NewsApiStatus.ERROR
-                _news.value=News(null,"error",0)
+                getNewsTableApi(
+                    NewsApi.retrofitService.getTopHeadlinesApi().articles,
+                    "topHeadlines"
+                )
+            } catch (e: java.lang.Exception) {
+                Log.d("newsCatch", "getTopHeadLinesApi: $e")
+            }
+        }
+    }
+
+    private fun getBusinessNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(
+                        NewsApi.retrofitService.getBusinessNewsApi().articles,
+                        "business"
+                    )
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getBusinessNewsApi: $e")
+                }
+            }
+        }
+
+    }
+
+    private fun getEntertainmentNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(
+                        NewsApi.retrofitService.getEntertainmentNewsApi().articles,
+                        "entertainment"
+                    )
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getEntertainmentNewsApi: $e")
+                }
+            }
+        }
+
+    }
+
+    private fun getGeneralNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getGeneralNewsApi().articles, "general")
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getGeneralNewsApi: $e")
+                }
+            }
+        }
+
+    }
+
+    private fun getHealthNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getHealthNewsApi().articles, "health")
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getHealthNewsApi: $e")
+                }
+            }
+        }
+
+    }
+
+    private fun getScienceNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getScienceNewsApi().articles, "science")
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getScienceNewsApi: $e")
+                }
+            }
+        }
+
+    }
+
+    private fun getSportsNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(NewsApi.retrofitService.getSportsNewsApi().articles, "sports")
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getSportsNewsApi: $e")
+                }
+            }
+        }
+
+    }
+
+    private fun getTechnologyNewsApi() {
+        GlobalScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getNewsTableApi(
+                        NewsApi.retrofitService.getTechnologyNewsApi().articles,
+                        "technology"
+                    )
+                } catch (e: java.lang.Exception) {
+                    Log.d("newsCatch", "getTechnologyNewsApi: $e")
+                }
             }
         }
     }

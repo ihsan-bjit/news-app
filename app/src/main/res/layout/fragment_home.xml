@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.HomeFragment">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="6dp"
 
-         />
-    <!--tools:listitem="@layout/news_item"
-    app:listData="@{() -> viewModel.photos}"
-    android:clipToPadding="false"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="50dp">
 
-        app:spanCount="2"
-        tools:itemCount="16"
-         app:newsApiStatus="@{() -> viewModel.status}" -->
-    <ImageView
-        android:id="@+id/status_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       />
+        <ImageView
+            android:id="@+id/status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6dp" />
+    </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
