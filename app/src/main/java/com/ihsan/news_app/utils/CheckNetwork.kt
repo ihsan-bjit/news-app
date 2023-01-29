@@ -75,8 +75,7 @@ class CheckNetwork : BroadcastReceiver() {
             Log.d("Internet", "onReceive: Not connected")
         }
     }
-
-
+    
     fun checkINTERNETPermission() {
         if (ContextCompat.checkSelfPermission(
                 MyApplication.instance, Manifest.permission.INTERNET
