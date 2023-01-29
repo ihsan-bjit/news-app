@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         //Network check and toast at start up
         val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
-        registerReceiver(CheckNetwork().networkReceiver(), filter)
+        requestSmsPermission()
+        registerReceiver(CheckNetwork(), filter)
         CheckNetwork().checkINTERNETPermission()
         WorkRequest().setPeriodicWorkRequest()
 
@@ -53,6 +54,14 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)
+    }
+
+    private fun requestSmsPermission() {
+        val permission = Manifest.permission.RECEIVE_SMS
+        val grant = ContextCompat.checkSelfPermission(this, permission)
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), 1000)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
