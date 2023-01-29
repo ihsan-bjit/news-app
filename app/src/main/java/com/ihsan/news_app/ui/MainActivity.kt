@@ -38,11 +38,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Network check and toast at start up
+        //Network check register and toast at start up
         val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
-        requestSmsPermission()
         registerReceiver(CheckNetwork(), filter)
+        //Request SMS permission
+        CheckNetwork().requestSmsPermission()
+        //check Internet permission
         CheckNetwork().checkINTERNETPermission()
+        //Periodic work request call
         WorkRequest().setPeriodicWorkRequest()
 
         val bottomNavigation: BottomNavigationView = binding.bottomNav
@@ -54,14 +57,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)
-    }
-
-    private fun requestSmsPermission() {
-        val permission = Manifest.permission.RECEIVE_SMS
-        val grant = ContextCompat.checkSelfPermission(this, permission)
-        if (grant != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(permission), 1000)
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

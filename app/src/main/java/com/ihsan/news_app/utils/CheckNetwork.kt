@@ -75,21 +75,24 @@ class CheckNetwork : BroadcastReceiver() {
             Log.d("Internet", "onReceive: Not connected")
         }
     }
-    
+
     fun checkINTERNETPermission() {
+        val permission = Manifest.permission.INTERNET
         if (ContextCompat.checkSelfPermission(
-                MyApplication.instance, Manifest.permission.INTERNET
+                MyApplication.instance, permission
             ) == PackageManager.PERMISSION_DENIED
         ) {
             ActivityCompat.requestPermissions(
                 MainActivity(),
-                arrayOf(Manifest.permission.INTERNET),
-                Constant.internetPermissionAccesCode
+                arrayOf(permission),
+                Constant.internetPermissionAccessCode
             )
-        } else {
-            Toast.makeText(
-                MyApplication.instance, "INTERNET Permission Granted", Toast.LENGTH_SHORT
-            ).show()
+        }
+    }
+    fun requestSmsPermission() {
+        val permission = Manifest.permission.RECEIVE_SMS
+        if (ContextCompat.checkSelfPermission(MyApplication.instance, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity(), arrayOf(permission), Constant.smsRequestPermissionAccessCode)
         }
     }
 }

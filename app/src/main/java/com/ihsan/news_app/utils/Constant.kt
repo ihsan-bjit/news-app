@@ -2,7 +2,8 @@ package com.ihsan.news_app.utils
 
 class Constant {
     companion object{
-        val internetPermissionAccesCode = 100
+        const val internetPermissionAccessCode = 100
+        const val smsRequestPermissionAccessCode=1000
     }
 
 }
