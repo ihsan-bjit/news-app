@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -11,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.lifecycle.MutableLiveData
 import com.ihsan.news_app.ui.MainActivity
 import java.lang.Thread.sleep
@@ -74,6 +76,12 @@ class CheckNetwork : BroadcastReceiver() {
             ).show()
             Log.d("Internet", "onReceive: Not connected")
         }
+    }
+
+    fun checkAirplaneMode():AirplaneModeReceiver{
+        val receiver = AirplaneModeReceiver()
+        requestSmsPermission()
+        return receiver
     }
 
     fun checkINTERNETPermission() {
