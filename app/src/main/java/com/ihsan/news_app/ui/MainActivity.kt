@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         //Network check register and toast at start up
         registerReceiver(CheckNetwork(), IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
         //AirplaneMode check register
-        registerReceiver(CheckNetwork().checkAirplaneMode(),IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
+        registerReceiver(AirplaneModeReceiver(),IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
         //Request SMS permission
         CheckNetwork().requestSmsPermission()
         //check Internet permission
@@ -47,5 +47,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(CheckNetwork())
     }
 }

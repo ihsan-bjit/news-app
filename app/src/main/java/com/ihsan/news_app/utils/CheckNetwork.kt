@@ -70,18 +70,9 @@ class CheckNetwork : BroadcastReceiver() {
                 networkStatus.value!!.ethernet = false
             }
         } else if (capabilities == null) {
-
-            Toast.makeText(
-                MyApplication.instance, "No Internet Connection", Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(MyApplication.instance, "No Internet Connection", Toast.LENGTH_SHORT).show()
             Log.d("Internet", "onReceive: Not connected")
         }
-    }
-
-    fun checkAirplaneMode():AirplaneModeReceiver{
-        val receiver = AirplaneModeReceiver()
-        requestSmsPermission()
-        return receiver
     }
 
     fun checkINTERNETPermission() {
