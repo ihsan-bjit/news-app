@@ -2,15 +2,17 @@ package com.ihsan.news_app.viewmodel
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.ihsan.news_app.model.*
 import com.ihsan.news_app.network.NewsApi
+import com.ihsan.news_app.repository.NewsRepository
 import com.ihsan.news_app.roomdb.dao.NewsDao
 import com.ihsan.news_app.roomdb.data.DataConverter
 import com.ihsan.news_app.roomdb.db.NewsDatabase
-import com.ihsan.news_app.repository.NewsRepository
+import com.ihsan.news_app.utils.MyApplication
 import kotlinx.coroutines.*
 
 enum class NewsApiStatus { LOADING, ERROR, DONE }
@@ -19,7 +21,6 @@ enum class NewsApiStatus { LOADING, ERROR, DONE }
 class NewsviewViewModel(application: Application) : AndroidViewModel(application) {
     //Initialize repository object
     private val repository: NewsRepository
-
     //Dao Initialize
     private var newsDao: NewsDao
 
@@ -48,6 +49,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
     fun getAllNewsLocal(): LiveData<List<NewsTable>> {
         return repository.getAllNews()
     }
+
     fun getTopHeadlineNewsLocal(): LiveData<List<NewsTable>> {
         return repository.readTopHeadlines()
     }
@@ -84,7 +86,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         try {
             GlobalScope.launch {
                 viewModelScope.launch(Dispatchers.IO) {
-
                     getTopHeadLinesApi()
                     getBusinessNewsApi()
                     getEntertainmentNewsApi()
@@ -93,11 +94,10 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                     getScienceNewsApi()
                     getSportsNewsApi()
                     getTechnologyNewsApi()
-                    Log.d("newsViewModel", "getAllNewsApiTry: Api Hit")
+                    Log.d("newsViewModel", "getAllNewsApiTry: Api Hit Inside Scope")
                     delay(5000)
                 }
             }
-
         } catch (e: Exception) {
             Log.d("newsViewModel", "getAllNewsApiException: $e")
             return false
@@ -110,7 +110,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
             Log.d("newsApi", "$category NewsApi Size null return: null")
         }
         val newNewsList = DataConverter().getNewsTable(apiArticleList, category)
-//        _status.value = NewsApiStatus.DONE
         Log.d("newsNewApi", "$category New News Size: ${newNewsList.size}")
         repository.addNewses(newNewsList)
     }

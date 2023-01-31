@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -24,11 +25,9 @@ private lateinit var viewModel: NewsviewViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
-
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentHomeBinding
-
     private val viewModel: NewsviewViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
