@@ -1,4 +1,4 @@
-package com.ihsan.news_app.roomdb.repository
+package com.ihsan.news_app.repository
 
 import androidx.lifecycle.LiveData
 import com.ihsan.news_app.model.NewsTable
