@@ -20,7 +20,7 @@ class Utils {
         val date = dateFormat.parse(timestamp)
         val currentTime = Calendar.getInstance().timeInMillis
         var hoursAgo = (currentTime - date.time) / (60 * 60 * 1000)
-        var yMDHAgo = " "
+        var yMDHAgo = ""
         if (hoursAgo.equals(0)) {
             return "1h> ago"
         }

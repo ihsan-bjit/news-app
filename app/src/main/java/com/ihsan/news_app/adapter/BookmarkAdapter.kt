@@ -19,6 +19,10 @@ import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.ui.fragment.BookmarksFragmentDirections
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+
 @SuppressLint("NotifyDataSetChanged")
 class BookmarkAdapter(
     private val context: Context,
@@ -48,7 +52,10 @@ class BookmarkAdapter(
         Log.d("newsBookmarkAdapter", "onViewCreated adapter: ${articleList.size}")
         holder.title.text=article.title
         holder.description.text=article.description
-        holder.source.text=article.sourceName
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val date= dateFormat.parse(article.publishedAt)
+        val cal=Calendar.getInstance()
+        holder.source.text= "${article.sourceName}"
         holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_remove)
 
         holder.btnBookmark.setOnClickListener{
