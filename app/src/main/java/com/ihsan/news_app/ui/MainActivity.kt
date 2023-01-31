@@ -1,9 +1,13 @@
 package com.ihsan.news_app.ui
 
+import android.Manifest
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,9 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ihsan.news_app.R.id
 import com.ihsan.news_app.databinding.ActivityMainBinding
-import com.ihsan.news_app.utils.AirplaneModeReceiver
-import com.ihsan.news_app.utils.CheckNetwork
-import com.ihsan.news_app.utils.WorkRequest
+import com.ihsan.news_app.utils.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         //check Internet permission
         checkNetwork.checkINTERNETPermission()
         //Request SMS permission
-        //checkNetwork.requestSmsPermission()
+        requestSmsPermission()
         //Periodic work request call
         WorkRequest().setPeriodicWorkRequest()
 
@@ -47,6 +49,12 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)
+    }
+    private fun requestSmsPermission() {
+        val permission = Manifest.permission.RECEIVE_SMS
+        if (ContextCompat.checkSelfPermission(MyApplication.instance, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), Constant.smsRequestPermissionAccessCode)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

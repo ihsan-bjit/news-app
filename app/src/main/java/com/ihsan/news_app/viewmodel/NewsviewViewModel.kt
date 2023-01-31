@@ -2,7 +2,6 @@ package com.ihsan.news_app.viewmodel
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -12,15 +11,13 @@ import com.ihsan.news_app.repository.NewsRepository
 import com.ihsan.news_app.roomdb.dao.NewsDao
 import com.ihsan.news_app.roomdb.data.DataConverter
 import com.ihsan.news_app.roomdb.db.NewsDatabase
-import com.ihsan.news_app.utils.MyApplication
 import kotlinx.coroutines.*
-
-enum class NewsApiStatus { LOADING, ERROR, DONE }
 
 @OptIn(DelicateCoroutinesApi::class)
 class NewsviewViewModel(application: Application) : AndroidViewModel(application) {
     //Initialize repository object
     private val repository: NewsRepository
+
     //Dao Initialize
     private var newsDao: NewsDao
 
@@ -118,8 +115,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             try {
                 getNewsTableApi(
-                    NewsApi.retrofitService.getTopHeadlinesApi().articles,
-                    "topHeadlines"
+                    NewsApi.retrofitService.getTopHeadlinesApi().articles, "topHeadlines"
                 )
             } catch (e: java.lang.Exception) {
                 Log.d("newsCatch", "getTopHeadLinesApi: $e")
@@ -132,8 +128,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     getNewsTableApi(
-                        NewsApi.retrofitService.getBusinessNewsApi().articles,
-                        "business"
+                        NewsApi.retrofitService.getBusinessNewsApi().articles, "business"
                     )
                 } catch (e: java.lang.Exception) {
                     Log.d("newsCatch", "getBusinessNewsApi: $e")
@@ -148,8 +143,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     getNewsTableApi(
-                        NewsApi.retrofitService.getEntertainmentNewsApi().articles,
-                        "entertainment"
+                        NewsApi.retrofitService.getEntertainmentNewsApi().articles, "entertainment"
                     )
                 } catch (e: java.lang.Exception) {
                     Log.d("newsCatch", "getEntertainmentNewsApi: $e")
@@ -216,8 +210,7 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     getNewsTableApi(
-                        NewsApi.retrofitService.getTechnologyNewsApi().articles,
-                        "technology"
+                        NewsApi.retrofitService.getTechnologyNewsApi().articles, "technology"
                     )
                 } catch (e: java.lang.Exception) {
                     Log.d("newsCatch", "getTechnologyNewsApi: $e")

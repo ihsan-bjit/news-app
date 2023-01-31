@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -12,7 +11,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.registerReceiver
 import androidx.lifecycle.MutableLiveData
 import com.ihsan.news_app.ui.MainActivity
 import java.lang.Thread.sleep
@@ -34,7 +32,7 @@ class CheckNetwork : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        Thread{
+        Thread {
             sleep(1000)
         }
         val instance = MyApplication.instance
@@ -45,15 +43,15 @@ class CheckNetwork : BroadcastReceiver() {
 
         Log.d("Internet", "onReceive: $capabilities")
         if (capabilities != null) {
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)&& !networkStatus.value!!.wifi) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) && !networkStatus.value!!.wifi) {
                 Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
                 Toast.makeText(instance, "Internet connected On WIFI", Toast.LENGTH_SHORT).show()
                 networkStatus.value!!.wifi = true
-                networkStatus.value!!.cellular=false
+                networkStatus.value!!.cellular = false
             } else {
                 networkStatus.value!!.wifi = false
             }
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)&& !networkStatus.value!!.cellular) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) && !networkStatus.value!!.cellular) {
                 Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
                 Toast.makeText(instance, "Internet connected On CELLULAR", Toast.LENGTH_SHORT)
                     .show()
@@ -70,7 +68,8 @@ class CheckNetwork : BroadcastReceiver() {
                 networkStatus.value!!.ethernet = false
             }
         } else if (capabilities == null) {
-            Toast.makeText(MyApplication.instance, "No Internet Connection", Toast.LENGTH_SHORT).show()
+            Toast.makeText(MyApplication.instance, "No Internet Connection", Toast.LENGTH_SHORT)
+                .show()
             Log.d("Internet", "onReceive: Not connected")
         }
     }
@@ -86,12 +85,6 @@ class CheckNetwork : BroadcastReceiver() {
                 arrayOf(permission),
                 Constant.internetPermissionAccessCode
             )
-        }
-    }
-    fun requestSmsPermission() {
-        val permission = Manifest.permission.RECEIVE_SMS
-        if (ContextCompat.checkSelfPermission(MyApplication.instance, permission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity(), arrayOf(permission), Constant.smsRequestPermissionAccessCode)
         }
     }
 }

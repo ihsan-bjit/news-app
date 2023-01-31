@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,10 +49,10 @@ class HomeFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
 //        viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
         viewModel.getAllNewsLocal.observe(requireActivity()) {
-                Log.d("newsHome", "onViewCreated home newsList: ${it.size}")
-                val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
-                recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-                recyclerView.adapter = ArticleAdapter(it)
+            Log.d("newsHome", "onViewCreated home newsList: ${it.size}")
+            val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+            recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
+            recyclerView.adapter = ArticleAdapter(it)
             if (it.isEmpty()) {
                 Log.d("newsHome", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()
