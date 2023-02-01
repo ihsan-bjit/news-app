@@ -26,10 +26,10 @@
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="120dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:maxHeight="140dp"
-                android:minHeight="120dp"
+                android:maxHeight="150dp"
+                android:minHeight="130dp"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_view"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="3dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginHorizontal="2dp"
             android:orientation="vertical">
 
             <TextView
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/title_name"
                 android:maxLines="2"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/description"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +68,7 @@
                 android:maxLines="2"
                 android:textSize="16sp"
                 android:textStyle="italic"
+                android:layout_marginTop="5dp"
                 app:layout_constraintBottom_toTopOf="@id/card_action"
                 app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,12 +104,14 @@
                     android:id="@+id/bookmarks"
                     android:layout_width="28dp"
                     android:layout_height="42dp"
+                    android:layout_marginEnd="5dp"
                     android:backgroundTint="#00FFFFFF"
-                    android:layout_marginRight="5dp"
                     android:contentDescription="@string/bookmark_button"
                     android:src="@drawable/ic_bookmark_add"
+                    android:translationY="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
