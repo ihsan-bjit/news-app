@@ -47,7 +47,7 @@ class SportsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getSportsNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsSports", "onViewCreated home newsList: ${it.size}")
+            Log.d("newsSports", "onViewCreated Sports newsList: ${it.size}")
 
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)

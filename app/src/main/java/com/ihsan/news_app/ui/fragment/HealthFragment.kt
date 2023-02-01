@@ -47,7 +47,7 @@ class HealthFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getHealthNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsHealth", "onViewCreated home newsList: ${it.size}")
+            Log.d("newsHealth", "onViewCreated Health newsList: ${it.size}")
 
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)

@@ -28,7 +28,7 @@ class ArticleAdapter(
     private val articleList: List<NewsTable>
 ) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
     private val viewModel: NewsviewViewModel = NewsviewViewModel(application = Application())
-    private var filterList=articleList
+    var filterList=articleList
     class ArticleViewHolder(private val binding: View) : RecyclerView.ViewHolder(binding){
         val title: TextView =itemView.findViewById(R.id.title)
         val image:ImageView=itemView.findViewById(R.id.image)
@@ -39,6 +39,7 @@ class ArticleAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val root=LayoutInflater.from(parent.context).inflate(R.layout.news_item,parent,false)
+        Log.d("newsAdapter", "onCreateViewHolder: ${filterList.size}")
         return ArticleViewHolder(root)
     }
 
@@ -49,7 +50,7 @@ class ArticleAdapter(
     @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article=filterList[position]
-        Log.d("newsAdapter", "onViewCreated adapter: ${filterList.size}")
+        Log.d("newsAdapter", "BindViewHolder: ${filterList.size}")
         holder.title.text=article.title
         holder.description.text=article.description
         val source=article.sourceName?.split(".")
@@ -97,11 +98,11 @@ class ArticleAdapter(
 
     fun filter(text: String) {
         val filteredList = ArrayList<NewsTable>()
-        for (article in articleList) {
-            if (article.title?.lowercase(Locale.ROOT)
+        articleList.map {
+            if (it.title?.lowercase(Locale.ROOT)
                     ?.contains(text.lowercase(Locale.ROOT)) == true
             ) {
-                filteredList.add(article)
+                filteredList.add(it)
             }
         }
         filterList(filteredList)

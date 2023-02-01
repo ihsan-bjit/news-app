@@ -47,7 +47,7 @@ class GeneralFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getGeneralNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsGeneral", "onViewCreated home newsList: ${it.size}")
+            Log.d("newsGeneral", "onViewCreated General newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =

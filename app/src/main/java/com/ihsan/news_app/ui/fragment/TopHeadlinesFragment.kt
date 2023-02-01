@@ -48,7 +48,7 @@ class TopHeadlinesFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
 
         viewModel.getTopHeadlineNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsTopHeadlines", "onViewCreated home newsList: ${it.size}")
+            Log.d("newsTopHeadlines", "onViewCreated TopHeadlines newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =
@@ -75,16 +75,15 @@ class TopHeadlinesFragment : Fragment() {
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
         val searchView = item?.actionView as SearchView
-        var view1 = item.actionView
-        val re = view1?.findViewById<RecyclerView>(R.id.recyclerview_topHeadlines)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
-                    val adapter = re?.adapter as ArticleAdapter
+                Log.d("news", "onQueryTextChange: $newText")
+                if (!newText.isNullOrEmpty()&& binding.recyclerviewTopHeadlines.adapter!=null) {
+                    val adapter = binding.recyclerviewTopHeadlines.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
                 return false

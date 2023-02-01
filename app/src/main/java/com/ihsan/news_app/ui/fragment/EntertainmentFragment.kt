@@ -47,7 +47,7 @@ class EntertainmentFragment : Fragment() {
         recyclerView = binding.recyclerviewEntertainment
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getEntertainmentNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsEntertainment", "onViewCreated newsList: ${it.size}")
+            Log.d("newsEntertainment", "onViewCreated Entertainment newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter =

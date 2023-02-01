@@ -46,7 +46,7 @@ class ScienceFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getScienceNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsScience", "onViewCreated home newsList: ${it.size}")
+            Log.d("newsScience", "onViewCreated Science newsList: ${it.size}")
 
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)

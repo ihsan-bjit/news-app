@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
+                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
@@ -89,6 +89,10 @@ class HomeFragment : Fragment() {
             }
         })
         super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.d("news", "onPause: home")
     }
 }
 

@@ -34,6 +34,7 @@ class BusinessFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("news", "onCreateView: Business")
         binding = FragmentBusinessBinding.inflate(inflater)
         // Inflate the layout for this fragment
         return binding.root
@@ -41,6 +42,7 @@ class BusinessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("news", "onViewCreated: Business")
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
 
@@ -49,7 +51,7 @@ class BusinessFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
 
         viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner) {
-            Log.d("newsBusiness", "onViewCreated home newsList: ${it.size}")
+            Log.d("newsBusiness", "onViewCreated Business newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter = ArticleAdapter(it)
@@ -71,6 +73,7 @@ class BusinessFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d("news", "onCreateOptionsMenu: business")
         menu.clear()
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
@@ -81,7 +84,8 @@ class BusinessFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
+                Log.d("news", "onQueryTextChange Business: $newText")
+                if (!newText.isNullOrEmpty() && binding.recyclerviewBusiness.adapter!=null) {
                      val adapter = binding.recyclerviewBusiness.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
