@@ -25,7 +25,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ArticleAdapter(
-    private val articleList: List<NewsTable>
+    private val articleList: ArrayList<NewsTable>
 ) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
     private val viewModel: NewsviewViewModel = NewsviewViewModel(application = Application())
     var filterList=articleList
@@ -47,7 +47,7 @@ class ArticleAdapter(
         return filterList.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article=filterList[position]
         Log.d("newsAdapter", "BindViewHolder: ${filterList.size}")
@@ -91,7 +91,7 @@ class ArticleAdapter(
         }
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun filterList(list: List<NewsTable>) {
+    fun filterList(list: ArrayList<NewsTable>) {
         filterList = list
         notifyDataSetChanged()
     }

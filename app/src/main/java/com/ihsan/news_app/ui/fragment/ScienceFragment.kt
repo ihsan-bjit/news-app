@@ -50,8 +50,7 @@ class ScienceFragment : Fragment() {
 
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-            recyclerView.adapter =
-                ArticleAdapter(it)
+            recyclerView.adapter = ArticleAdapter(it as ArrayList<NewsTable>)
             if (it.isEmpty()) {
                 Log.d("newsScience", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()

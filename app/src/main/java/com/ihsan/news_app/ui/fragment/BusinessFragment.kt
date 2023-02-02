@@ -35,7 +35,7 @@ class BusinessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d("news", "onCreateView: Business")
-        binding = FragmentBusinessBinding.inflate(inflater)
+        binding = FragmentBusinessBinding.inflate(inflater,container,false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -49,12 +49,14 @@ class BusinessFragment : Fragment() {
         recyclerView = binding.recyclerviewBusiness
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
+        val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+        recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
 
         viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner) {
             Log.d("newsBusiness", "onViewCreated Business newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-            recyclerView.adapter = ArticleAdapter(it)
+            recyclerView.adapter = ArticleAdapter(it as ArrayList<NewsTable>)
             if (it.isEmpty()) {
                 viewModel.getAllNewsApi()
                 Log.d("newsBusiness", "onViewCreated with empty roomData: APi Call ")
@@ -72,9 +74,9 @@ class BusinessFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("news", "onCreateOptionsMenu: business")
-        menu.clear()
+        Log.d("news", "onCreateOptionsMenu: business ${menu.clear()}")
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
         val searchView = item?.actionView as SearchView
@@ -85,8 +87,8 @@ class BusinessFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 Log.d("news", "onQueryTextChange Business: $newText")
-                if (!newText.isNullOrEmpty() && binding.recyclerviewBusiness.adapter!=null) {
-                     val adapter = binding.recyclerviewBusiness.adapter as ArticleAdapter
+                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
+                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
                 return false

@@ -34,7 +34,7 @@ class TopHeadlinesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTopHeadlinesBinding.inflate(inflater)
+        binding = FragmentTopHeadlinesBinding.inflate(inflater,container,false)
         recyclerView = binding.recyclerviewTopHeadlines
         // Inflate the layout for this fragment
         return binding.root
@@ -46,13 +46,13 @@ class TopHeadlinesFragment : Fragment() {
         refreshLayout = binding.swipeLayout
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
-
+        val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+        recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
         viewModel.getTopHeadlineNewsLocal().observe(viewLifecycleOwner) {
             Log.d("newsTopHeadlines", "onViewCreated TopHeadlines newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-            recyclerView.adapter =
-                ArticleAdapter(it)
+            recyclerView.adapter = ArticleAdapter(it as ArrayList<NewsTable>)
             if (it.isEmpty()) {
                 Log.d("newsTopHeadlines", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()
@@ -82,8 +82,8 @@ class TopHeadlinesFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 Log.d("news", "onQueryTextChange: $newText")
-                if (!newText.isNullOrEmpty()&& binding.recyclerviewTopHeadlines.adapter!=null) {
-                    val adapter = binding.recyclerviewTopHeadlines.adapter as ArticleAdapter
+                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
+                    val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
                 return false

@@ -39,8 +39,14 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentHomeBinding.inflate(inflater,container,false)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Log.d("newsHome", "onResume: ")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,18 +55,20 @@ class HomeFragment : Fragment() {
         recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(MyApplication.instance)
         recyclerView.setHasFixedSize(true)
-
+        val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
+        recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
 //        viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
         viewModel.getAllNewsLocal.observe(requireActivity()) {
             Log.d("newsHome", "onViewCreated home newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-            recyclerView.adapter = ArticleAdapter(it)
+            recyclerView.adapter = ArticleAdapter(it as ArrayList<NewsTable>)
             if (it.isEmpty()) {
                 Log.d("newsHome", "onViewCreated with empty roomData: APi Call ")
                 viewModel.getAllNewsApi()
             }
         }
+
         refreshLayout.setOnRefreshListener {
             viewModel.getAllNewsLocal().observe(viewLifecycleOwner) {
                 viewModel.viewModelScope.launch {
@@ -73,6 +81,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.top_search, menu)
@@ -95,7 +104,7 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         searchView.setQuery("", false)
-        Log.d("news", "onPause: home")
+        Log.d("newsHome", "onPause: home")
     }
 }
 
