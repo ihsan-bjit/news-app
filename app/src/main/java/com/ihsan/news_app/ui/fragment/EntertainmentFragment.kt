@@ -78,7 +78,6 @@ class EntertainmentFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
                     val adapter = recyclerView.adapter as ArticleAdapter

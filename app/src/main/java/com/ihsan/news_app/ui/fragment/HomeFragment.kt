@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentHomeBinding
+import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.utils.MyApplication
 import com.ihsan.news_app.utils.Utils
@@ -27,6 +28,7 @@ class HomeFragment : Fragment() {
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: NewsviewViewModel by viewModels()
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,7 @@ class HomeFragment : Fragment() {
         recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(MyApplication.instance)
         recyclerView.setHasFixedSize(true)
+
 //        viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
         viewModel.getAllNewsLocal.observe(requireActivity()) {
             Log.d("newsHome", "onViewCreated home newsList: ${it.size}")
@@ -65,7 +68,7 @@ class HomeFragment : Fragment() {
                     Utils().refreshMessage()
                 }
             }
-            Log.d("newsHome", "onViewCreated: swip to refresh")
+            Log.d("newsHome", "onViewCreated: swipe to refresh")
             refreshLayout.isRefreshing = false
         }
     }
@@ -74,12 +77,11 @@ class HomeFragment : Fragment() {
         menu.clear()
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
-        val searchView = item?.actionView as SearchView
+        searchView = item?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
@@ -92,6 +94,7 @@ class HomeFragment : Fragment() {
     }
     override fun onPause() {
         super.onPause()
+        searchView.setQuery("", false)
         Log.d("news", "onPause: home")
     }
 }
