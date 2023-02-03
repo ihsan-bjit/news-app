@@ -24,6 +24,7 @@ class EntertainmentFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentEntertainmentBinding
+    private lateinit var adapter: ArticleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class EntertainmentFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEntertainmentBinding.inflate(inflater)
         // Inflate the layout for this fragment
         return binding.root
@@ -43,7 +44,7 @@ class EntertainmentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = binding.recyclerviewEntertainment
+        recyclerView = view.findViewById(R.id.recyclerview_entertainment)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getEntertainmentNewsLocal().observe(viewLifecycleOwner) {
             Log.d("newsEntertainment", "onViewCreated Entertainment newsList: ${it.size}")
@@ -77,8 +78,9 @@ class EntertainmentFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
+                if (newText != null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }

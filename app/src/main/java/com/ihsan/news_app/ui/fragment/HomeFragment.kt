@@ -13,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ihsan.news_app.R
 import com.ihsan.news_app.adapter.ArticleAdapter
 import com.ihsan.news_app.databinding.FragmentHomeBinding
-import com.ihsan.news_app.model.Article
 import com.ihsan.news_app.model.NewsTable
 import com.ihsan.news_app.utils.MyApplication
 import com.ihsan.news_app.utils.Utils
@@ -52,7 +51,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
-        recyclerView = binding.recyclerview
+        recyclerView = view.findViewById(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(MyApplication.instance)
         recyclerView.setHasFixedSize(true)
         val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
@@ -84,6 +83,7 @@ class HomeFragment : Fragment() {
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+        Log.d("newsHome", "onCreateOptionsMenu: created")
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
         searchView = item?.actionView as SearchView
@@ -91,8 +91,9 @@ class HomeFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
+                if (newText != null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }

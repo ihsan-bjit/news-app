@@ -43,7 +43,7 @@ class HealthFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = binding.recyclerviewHealth
+        recyclerView = view.findViewById(R.id.recyclerview_health)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getHealthNewsLocal().observe(viewLifecycleOwner) {
@@ -81,7 +81,7 @@ class HealthFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
+                if (newText != null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }

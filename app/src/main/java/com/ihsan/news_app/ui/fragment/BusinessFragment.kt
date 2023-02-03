@@ -24,6 +24,8 @@ class BusinessFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentBusinessBinding
+    private lateinit var adapter: ArticleAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +33,7 @@ class BusinessFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         Log.d("news", "onCreateView: Business")
         binding = FragmentBusinessBinding.inflate(inflater,container,false)
@@ -45,13 +46,11 @@ class BusinessFragment : Fragment() {
         Log.d("news", "onViewCreated: Business")
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-
-        recyclerView = binding.recyclerviewBusiness
+        recyclerView = view.findViewById(R.id.recyclerview_business)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
         val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
         recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
-
         viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner) {
             Log.d("newsBusiness", "onViewCreated Business newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
@@ -76,7 +75,8 @@ class BusinessFragment : Fragment() {
 
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("news", "onCreateOptionsMenu: business ${menu.clear()}")
+        menu.clear()
+        Log.d("newsBusiness", "onCreateOptionsMenu: created")
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
         val searchView = item?.actionView as SearchView
@@ -84,11 +84,9 @@ class BusinessFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d("news", "onQueryTextChange Business: $newText")
-                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
-                     val adapter = recyclerView.adapter as ArticleAdapter
+                if (newText != null) {
+                    val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
                 return false
