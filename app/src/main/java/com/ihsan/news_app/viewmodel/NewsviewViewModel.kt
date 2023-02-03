@@ -135,7 +135,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                 }
             }
         }
-
     }
 
     private fun getEntertainmentNewsApi() {
@@ -150,7 +149,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                 }
             }
         }
-
     }
 
     private fun getGeneralNewsApi() {
@@ -163,7 +161,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                 }
             }
         }
-
     }
 
     private fun getHealthNewsApi() {
@@ -176,7 +173,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                 }
             }
         }
-
     }
 
     private fun getScienceNewsApi() {
@@ -189,7 +185,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                 }
             }
         }
-
     }
 
     private fun getSportsNewsApi() {
@@ -202,7 +197,6 @@ class NewsviewViewModel(application: Application) : AndroidViewModel(application
                 }
             }
         }
-
     }
 
     private fun getTechnologyNewsApi() {

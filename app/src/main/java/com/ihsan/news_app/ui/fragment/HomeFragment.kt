@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         Log.d("newsHome", "onResume: ")
     }
 
