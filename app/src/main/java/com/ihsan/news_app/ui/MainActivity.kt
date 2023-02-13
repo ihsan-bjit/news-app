@@ -43,9 +43,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigation: BottomNavigationView = binding.bottomNav
         navController = findNavController(id.fragment_container)
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                id.tabLayoutFragment, id.bookmarksFragment
-            )
+            setOf(id.tabLayoutFragment, id.bookmarksFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigation.setupWithNavController(navController)

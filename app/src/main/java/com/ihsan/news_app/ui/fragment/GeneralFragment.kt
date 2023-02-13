@@ -24,6 +24,7 @@ class GeneralFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentGeneralBinding
+    private lateinit var adapter: ArticleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class GeneralFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = binding.recyclerviewGeneral
+        recyclerView = view.findViewById(R.id.recyclerview_general)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getGeneralNewsLocal().observe(viewLifecycleOwner) {
@@ -80,7 +81,7 @@ class GeneralFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
+                if (newText != null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }

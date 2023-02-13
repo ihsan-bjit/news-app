@@ -25,16 +25,15 @@ class TopHeadlinesFragment : Fragment() {
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentTopHeadlinesBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTopHeadlinesBinding.inflate(inflater,container,false)
-        recyclerView = binding.recyclerviewTopHeadlines
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -43,6 +42,7 @@ class TopHeadlinesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
+        recyclerView = view.findViewById(R.id.recyclerview_topHeadlines)
         refreshLayout = binding.swipeLayout
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -70,8 +70,10 @@ class TopHeadlinesFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+        Log.d("newsTopHeadlines", "onCreateOptionsMenu: created")
         inflater.inflate(R.menu.top_search, menu)
         val item = menu.findItem(R.id.topSearchAction)
         val searchView = item?.actionView as SearchView
@@ -81,8 +83,7 @@ class TopHeadlinesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d("news", "onQueryTextChange: $newText")
-                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
+                if (newText != null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }

@@ -18,24 +18,24 @@ class BookmarksFragment : Fragment() {
     private val viewModel: NewsviewViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
-    private lateinit var binding:FragmentBookmarksBinding
+    private lateinit var binding: FragmentBookmarksBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding=FragmentBookmarksBinding.inflate(inflater)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBookmarksBinding.inflate(inflater)
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getBookmarks().observe(viewLifecycleOwner){
+        viewModel.getBookmarks().observe(viewLifecycleOwner) {
             Log.d("newsBookmark", "onViewCreated: ${it.size}")
             newsList = it
             recyclerView = binding.recyclerviewBookmarks

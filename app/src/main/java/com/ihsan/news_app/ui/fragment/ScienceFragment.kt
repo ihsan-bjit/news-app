@@ -24,14 +24,15 @@ class ScienceFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     lateinit var newsList: List<NewsTable>
     private lateinit var binding: FragmentScienceBinding
+    private lateinit var adapter: ArticleAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScienceBinding.inflate(inflater)
         // Inflate the layout for this fragment
@@ -42,7 +43,7 @@ class ScienceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = binding.recyclerviewScience
+        recyclerView = view.findViewById(R.id.recyclerview_science)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getScienceNewsLocal().observe(viewLifecycleOwner) {
@@ -79,7 +80,7 @@ class ScienceFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
+                if (newText != null) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }
