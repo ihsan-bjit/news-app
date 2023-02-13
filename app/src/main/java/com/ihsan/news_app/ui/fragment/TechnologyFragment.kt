@@ -18,6 +18,7 @@ import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 class TechnologyFragment : Fragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var viewModel: NewsviewViewModel
@@ -27,7 +28,7 @@ class TechnologyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -35,15 +36,17 @@ class TechnologyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTechnologyBinding.inflate(inflater)
+        recyclerView = binding.recyclerviewTechnology
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = binding.recyclerviewTechnology
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getTechnologyNewsLocal().observe(viewLifecycleOwner) {
@@ -69,6 +72,7 @@ class TechnologyFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.top_search, menu)
@@ -81,8 +85,9 @@ class TechnologyFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
-                    val adapter = recyclerView.adapter as ArticleAdapter
-                    adapter.filter(newText)
+                    (recyclerView.adapter as ArticleAdapter).also {
+                        it.filter(newText)
+                    }
                 }
                 return false
             }

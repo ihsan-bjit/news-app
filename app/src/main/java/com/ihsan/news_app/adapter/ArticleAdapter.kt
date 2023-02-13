@@ -37,9 +37,14 @@ class ArticleAdapter(
         val btnBookmark:ImageButton=itemView.findViewById(R.id.bookmarks)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val root=LayoutInflater.from(parent.context).inflate(R.layout.news_item,parent,false)
         Log.d("newsAdapter", "onCreateViewHolder: ${filterList.size}")
+        if (filterList.size==0)
+        {
+            this.notifyDataSetChanged()
+        }
         return ArticleViewHolder(root)
     }
 
@@ -87,7 +92,7 @@ class ArticleAdapter(
                 TabLayoutFragmentDirections.actionTabLayoutFragmentToDetailNewsViewFragment(it1)
             }
             holder.run { itemView.findNavController().navigate(action) }
-            notifyDataSetChanged()
+
         }
     }
     @SuppressLint("NotifyDataSetChanged")

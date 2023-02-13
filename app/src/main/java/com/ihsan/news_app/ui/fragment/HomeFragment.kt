@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 
 private lateinit var viewModel: NewsviewViewModel
 
+@Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var recyclerView: RecyclerView
@@ -32,7 +33,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater,container,false)
+        recyclerView = binding.recyclerview
         return binding.root
     }
 
@@ -51,14 +52,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         refreshLayout = binding.swipeLayout
-        recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(MyApplication.instance)
         recyclerView.setHasFixedSize(true)
         val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
         recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
 //        viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        viewModel.getAllNewsLocal.observe(requireActivity()) {
+        viewModel.getAllNewsLocal.observe(viewLifecycleOwner) {
             Log.d("newsHome", "onViewCreated home newsList: ${it.size}")
             val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
             recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)

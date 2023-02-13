@@ -35,6 +35,7 @@ class EntertainmentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEntertainmentBinding.inflate(inflater)
+        recyclerView = binding.recyclerviewEntertainment
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -43,7 +44,7 @@ class EntertainmentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = binding.recyclerviewEntertainment
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getEntertainmentNewsLocal().observe(viewLifecycleOwner) {
             Log.d("newsEntertainment", "onViewCreated Entertainment newsList: ${it.size}")
@@ -68,6 +69,8 @@ class EntertainmentFragment : Fragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.top_search, menu)

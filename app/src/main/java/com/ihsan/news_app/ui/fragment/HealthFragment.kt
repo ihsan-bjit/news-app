@@ -18,6 +18,7 @@ import com.ihsan.news_app.utils.Utils
 import com.ihsan.news_app.viewmodel.NewsviewViewModel
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 class HealthFragment : Fragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var viewModel: NewsviewViewModel
@@ -27,7 +28,7 @@ class HealthFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -41,6 +42,7 @@ class HealthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
         recyclerView = binding.recyclerviewHealth
@@ -70,6 +72,7 @@ class HealthFragment : Fragment() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.top_search, menu)

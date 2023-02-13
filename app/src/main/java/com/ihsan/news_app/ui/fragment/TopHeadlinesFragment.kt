@@ -27,7 +27,6 @@ class TopHeadlinesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -42,6 +41,7 @@ class TopHeadlinesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
         refreshLayout = binding.swipeLayout
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
