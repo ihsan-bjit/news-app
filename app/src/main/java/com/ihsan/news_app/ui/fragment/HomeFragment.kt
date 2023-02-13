@@ -46,7 +46,6 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         Log.d("newsHome", "onResume: ")
     }
 
@@ -93,7 +92,7 @@ class HomeFragment : Fragment() {
                 return false
             }
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty() && recyclerView.adapter!=null) {
+                if (!newText.isNullOrEmpty()) {
                     val adapter = recyclerView.adapter as ArticleAdapter
                     adapter.filter(newText)
                 }

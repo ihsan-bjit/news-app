@@ -29,7 +29,6 @@ class BusinessFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -37,24 +36,23 @@ class BusinessFragment : Fragment() {
     ): View {
         Log.d("news", "onCreateView: Business")
         binding = FragmentBusinessBinding.inflate(inflater,container,false)
+        recyclerView = binding.recyclerviewBusiness
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         Log.d("news", "onViewCreated: Business")
         refreshLayout = binding.swipeLayout
         viewModel = ViewModelProvider(this)[NewsviewViewModel::class.java]
-        recyclerView = view.findViewById(R.id.recyclerview_business)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
         val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
         recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
         viewModel.getBusinessNewsLocal().observe(viewLifecycleOwner) {
             Log.d("newsBusiness", "onViewCreated Business newsList: ${it.size}")
-            val adapterViewState = recyclerView.layoutManager?.onSaveInstanceState()
-            recyclerView.layoutManager?.onRestoreInstanceState(adapterViewState)
             recyclerView.adapter = ArticleAdapter(it as ArrayList<NewsTable>)
             if (it.isEmpty()) {
                 viewModel.getAllNewsApi()
